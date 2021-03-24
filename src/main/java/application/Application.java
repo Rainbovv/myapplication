@@ -12,7 +12,6 @@ public class Application {
     static UserRepository userRepository = UserRepository.getInstance();
 
     public static void main(String[] args) {
-
         OptionParser parser = new OptionParser();
         parser.acceptsAll(Arrays.asList("createUser", "showTasks", "addTask", "showAllUsers"))
                 .withOptionalArg();
@@ -52,7 +51,6 @@ public class Application {
     }
 
     public static void addTask(OptionSet options) {
-
         User user = userRepository.getUserByUserName(options.valueOf("un").toString());
         Task task = new Task(options.valueOf("tt").toString(),
                 options.valueOf("td").toString());
@@ -62,7 +60,6 @@ public class Application {
     }
 
     public static void createUser(OptionSet options) {
-
         User user = new User(options.valueOf("fn").toString(),
                 options.valueOf("ln").toString(),
                 options.valueOf("un").toString());

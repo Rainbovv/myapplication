@@ -16,7 +16,6 @@ public abstract class AbstractRepository<T> {
     protected abstract Class<T> getEntityClass();
 
     public List<T> findBySpecification(AbstractSpecification<T> specification) {
-
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteria = builder.createQuery(getEntityClass());
         Root<T> root = criteria.from(getEntityClass());
@@ -26,18 +25,13 @@ public abstract class AbstractRepository<T> {
             Predicate predicate = specification.toPredicate(root, builder);
             criteria.where(predicate);
         }
-        Query query = entityManager.createQuery(criteria);
-
         return entityManager.createQuery(criteria).getResultList();
     }
 
     public Boolean create(T entity) {
-
         checkTransaction();
-
         try {
             entityManager.persist(entity);
-
             entityManager.getTransaction().commit();
             return true;
 
@@ -48,14 +42,10 @@ public abstract class AbstractRepository<T> {
     }
 
     public Boolean update(T entity) {
-
         checkTransaction();
-
         try {
             entityManager.merge(entity);
-
             entityManager.getTransaction().commit();
-
             return true;
 
         } catch (Exception e) {

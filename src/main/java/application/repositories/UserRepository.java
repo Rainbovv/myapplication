@@ -24,12 +24,10 @@ public class UserRepository extends AbstractRepository<User>{
     }
 
     public static class SingletonHolder {
-
         private static final UserRepository INSTANCE = new UserRepository();
     }
 
     public static UserRepository getInstance() {
-
         if (SingletonHolder.INSTANCE.entityManager == null)
             SingletonHolder.INSTANCE.entityManager = Persistence
                     .createEntityManagerFactory("local-pg")
