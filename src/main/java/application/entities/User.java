@@ -20,7 +20,9 @@ public class User {
     @Column(name = "user_name", unique = true, length = 50)
     private String userName;
 
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+
+    @OneToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<Task> tasks = new ArrayList<>();
 
     public User(String firstName, String lastName, String userName) {
@@ -73,18 +75,13 @@ public class User {
         this.tasks = tasks;
     }
 
-    public void addTask(Task task) {
-        this.tasks.add(task);
-    }
-
     @Override
     public String toString() {
-        return "User{" +
+        return "User {" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", userName='" + userName + '\'' +
-                ", tasks=" + tasks +
                 '}';
     }
 }

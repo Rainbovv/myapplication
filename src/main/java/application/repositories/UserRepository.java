@@ -2,7 +2,6 @@ package application.repositories;
 
 import application.entities.User;
 import application.tools.IsEqualSpecification;
-
 import javax.persistence.Persistence;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class UserRepository extends AbstractRepository<User>{
         return super.findBySpecification(null);
     }
 
-    public User getUserByName(String name) {
+    public User getUserByUserName(String name) {
         return super.findBySpecification(
                 new IsEqualSpecification<>("userName",name)).get(0);
     }

@@ -9,8 +9,9 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Transient
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     @Column(length = 50)
@@ -59,9 +60,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "Task {" +
                 "id=" + id +
-                ", userId=" + user +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 '}';
