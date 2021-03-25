@@ -21,8 +21,7 @@ public class User {
     private String userName;
 
 
-    @OneToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
     public User(String firstName, String lastName, String userName) {

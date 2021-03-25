@@ -12,6 +12,7 @@ public class Application {
     static UserRepository userRepository = UserRepository.getInstance();
 
     public static void main(String[] args) {
+
         OptionParser parser = new OptionParser();
         parser.acceptsAll(Arrays.asList("createUser", "showTasks", "addTask", "showAllUsers"))
                 .withOptionalArg();
@@ -36,14 +37,14 @@ public class Application {
                 parser.accepts("tt").requiredIf("addTask").withRequiredArg();
                 parser.accepts("td").requiredIf("addTask").withRequiredArg();
                 parser.accepts("un").requiredIf("createUser",
-                        "showTasks", "addTask").withRequiredArg();
+                        "addTask").withRequiredArg();
 
                 addTask(parser.parse(args));
                 break;
 
             case "-showTasks":
                 parser.accepts("un").requiredIf("createUser",
-                        "showTasks", "addTask").withRequiredArg();
+                        "showTasks").withRequiredArg();
 
                 userRepository.getUserByUserName(parser.parse(args).valueOf("un")
                         .toString()).getTasks().forEach(System.out::println);

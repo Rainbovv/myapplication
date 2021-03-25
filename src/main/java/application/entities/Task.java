@@ -1,6 +1,7 @@
 package application.entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "tasks")
 public class Task {
@@ -10,9 +11,8 @@ public class Task {
     private Long id;
 
     @Transient
-    @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<User> users;
 
     @Column(length = 50)
     private String title;
@@ -34,12 +34,12 @@ public class Task {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User userId) {
-        this.user = userId;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getTitle() {
