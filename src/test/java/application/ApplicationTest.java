@@ -16,7 +16,6 @@ class ApplicationTest {
     private static User user;
     private static Task task;
 
-
     @BeforeAll
     public static void prepareData() {
         userRepository = UserRepository.getInstance();
