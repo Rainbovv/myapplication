@@ -19,8 +19,15 @@ public class UserRepository extends AbstractRepository<User>{
     }
 
     public User getUserByUserName(String name) {
-        return super.findBySpecification(
-                new IsEqualSpecification<>("userName",name)).get(0);
+        List<User> users = super.findBySpecification(
+                new IsEqualSpecification<>("userName",name));
+        if (users.size() == 0)
+            return null;
+        return users.get(0);
+    }
+
+    public boolean removeByUserName(String userName) {
+        return super.remove(getUserByUserName(userName));
     }
 
     public static class SingletonHolder {

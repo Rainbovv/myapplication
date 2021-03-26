@@ -11,7 +11,14 @@ public class Task {
     private Long id;
 
     @Transient
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(name = "users_tasks",
+            inverseJoinColumns = @JoinColumn(name = "user_id",
+                    nullable = false,
+                    updatable = false),
+            joinColumns = @JoinColumn(name = "task_id",
+                    nullable = false,
+                    updatable = false))
     private Set<User> users;
 
     @Column(length = 50)

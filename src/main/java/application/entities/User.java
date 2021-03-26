@@ -21,7 +21,14 @@ public class User {
     private String userName;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+    @JoinTable(name = "users_tasks",
+            inverseJoinColumns = @JoinColumn(name = "task_id",
+                    nullable = false,
+                    updatable = false),
+            joinColumns = @JoinColumn(name = "user_id",
+                    nullable = false,
+                    updatable = false))
     private List<Task> tasks = new ArrayList<>();
 
     public User(String firstName, String lastName, String userName) {

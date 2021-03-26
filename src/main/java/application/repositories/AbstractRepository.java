@@ -53,6 +53,22 @@ public abstract class AbstractRepository<T> {
         }
     }
 
+    public Boolean remove(T entity) {
+        checkTransaction();
+
+        try {
+            entityManager.remove(entityManager.contains(entity) ?
+                    entity: entityManager.merge(entity));
+
+            entityManager.getTransaction().commit();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     protected void checkTransaction() {
         if (!entityManager.getTransaction().isActive()) {
             entityManager.getTransaction().begin();
