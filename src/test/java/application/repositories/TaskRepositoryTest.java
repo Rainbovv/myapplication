@@ -26,7 +26,8 @@ class TaskRepositoryTest {
     @Order(2)
     @Test
     void getTaskByTitle() {
-        assertEquals(taskRepository.getTaskByTitle(task.getTitle()).getDescription(), task.getDescription());
+        assertEquals(taskRepository.getTaskByTitle(task.getTitle()).getDescription(),
+                     task.getDescription());
     }
 
     @Order(3)
