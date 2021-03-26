@@ -27,7 +27,8 @@ class UserRepositoryTest {
     @Order(2)
     @Test
     void getUserByUserName() {
-        assertEquals(userRepository.getUserByUserName(user.getUserName()).getFirstName(), user.getFirstName());
+        assertEquals(userRepository.getUserByUserName(user.getUserName()).getFirstName(),
+                     user.getFirstName());
     }
 
     @Order(3)
