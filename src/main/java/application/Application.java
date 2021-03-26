@@ -5,8 +5,6 @@ import application.entities.User;
 import application.repositories.UserRepository;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-
-import javax.swing.*;
 import java.util.Arrays;
 
 public class Application {
