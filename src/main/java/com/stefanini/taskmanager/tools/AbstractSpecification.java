@@ -1,4 +1,4 @@
-package application.tools;
+package com.stefanini.taskmanager.tools;
 
 import org.hibernate.cfg.NotYetImplementedException;
 

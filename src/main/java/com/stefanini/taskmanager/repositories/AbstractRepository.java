@@ -1,6 +1,6 @@
-package application.repositories;
+package com.stefanini.taskmanager.repositories;
 
-import application.tools.AbstractSpecification;
+import com.stefanini.taskmanager.tools.AbstractSpecification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;

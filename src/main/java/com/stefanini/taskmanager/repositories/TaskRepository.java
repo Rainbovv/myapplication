@@ -1,7 +1,7 @@
-package application.repositories;
+package com.stefanini.taskmanager.repositories;
 
-import application.entities.Task;
-import application.tools.IsEqualSpecification;
+import com.stefanini.taskmanager.entities.Task;
+import com.stefanini.taskmanager.tools.IsEqualSpecification;
 import javax.persistence.Persistence;
 import java.util.List;
 

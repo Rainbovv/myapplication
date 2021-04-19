@@ -1,4 +1,4 @@
-package application.entities;
+package com.stefanini.taskmanager.entities;
 
 import javax.persistence.*;
 import java.util.ArrayList;

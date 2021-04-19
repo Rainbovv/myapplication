@@ -1,11 +1,12 @@
-package application;
+package com.stefanini.taskmanager;
 
-import application.entities.Task;
-import application.entities.User;
-import application.repositories.UserRepository;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import java.util.Arrays;
+
+import com.stefanini.taskmanager.entities.Task;
+import com.stefanini.taskmanager.entities.User;
+import com.stefanini.taskmanager.repositories.UserRepository;
 
 public class Application {
 
@@ -49,8 +50,7 @@ public class Application {
                 parser.accepts("un").requiredIf("createUser",
                         "showTasks").withRequiredArg();
 
-                userRepository.getUserByUserName(parser.parse(args).valueOf("un")
-                        .toString()).getTasks().forEach(System.out::println);
+                userRepository.getUserByUserName(parser.parse(args).valueOf("un").toString()).getTasks().forEach(System.out::println);
         }
     }
 
