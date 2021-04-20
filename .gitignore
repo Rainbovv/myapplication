@@ -1,5 +1,4 @@
 # Project exclude paths
-myapplication.iml
 /target/
 /.idea/
 /src/main/resources/META-INF/persistence.xml
@@ -7,3 +6,4 @@ myapplication.iml
 .project
 /.settings/
 Task1
+*.iml

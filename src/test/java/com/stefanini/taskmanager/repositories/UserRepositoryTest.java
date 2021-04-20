@@ -45,7 +45,7 @@ class UserRepositoryTest {
     @Order(4)
     @Test
     void getAllUsers() {
-        assertNotEquals(userRepository.getAllUsers().size(), 0);
+        assertNotEquals(userRepository.getAll().size(), 0);
     }
 
     @Order(5)

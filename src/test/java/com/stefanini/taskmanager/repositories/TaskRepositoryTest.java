@@ -44,7 +44,7 @@ class TaskRepositoryTest {
     @Order(4)
     @Test
     void getAllTasks() {
-        assertNotEquals(taskRepository.getAllTasks().size(), 0);
+        assertNotEquals(taskRepository.getAll().size(), 0);
     }
 
     @Order(5)

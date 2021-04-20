@@ -1,21 +1,18 @@
 package com.stefanini.taskmanager.dao;
 
 import com.stefanini.taskmanager.entities.User;
-import com.stefanini.taskmanager.tools.IsEqualSpecification;
+import com.stefanini.taskmanager.settings.Settings;
+import com.stefanini.taskmanager.tools.specifications.IsEqualSpecification;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class UserRepository extends AbstractRepository<User>{
+public class UserRepository extends BaseRepository<User>{
 
     private UserRepository() {}
 
     @Override
     protected Class<User> getEntityClass() {
         return User.class;
-    }
-
-    public List<User> getAllUsers() {
-        return super.findBySpecification(null);
     }
 
     public User getUserByUserName(String name) {
@@ -30,14 +27,14 @@ public class UserRepository extends AbstractRepository<User>{
         return super.remove(getUserByUserName(userName));
     }
 
-    public static class SingletonHolder {
+    private static class SingletonHolder {
         private static final UserRepository INSTANCE = new UserRepository();
     }
 
     public static UserRepository getInstance() {
         if (SingletonHolder.INSTANCE.entityManager == null)
             SingletonHolder.INSTANCE.entityManager = Persistence
-                    .createEntityManagerFactory("local-pg")
+                    .createEntityManagerFactory(Settings.getPersistenceProviderName())
                     .createEntityManager();
 
         return SingletonHolder.INSTANCE;

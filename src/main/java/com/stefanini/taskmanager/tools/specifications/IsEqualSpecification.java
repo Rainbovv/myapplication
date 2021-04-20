@@ -1,4 +1,4 @@
-package com.stefanini.taskmanager.tools;
+package com.stefanini.taskmanager.tools.specifications;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;

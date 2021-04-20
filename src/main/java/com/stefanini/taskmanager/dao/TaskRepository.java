@@ -1,20 +1,18 @@
 package com.stefanini.taskmanager.dao;
 
 import com.stefanini.taskmanager.entities.Task;
-import com.stefanini.taskmanager.tools.IsEqualSpecification;
+import com.stefanini.taskmanager.settings.Settings;
+import com.stefanini.taskmanager.tools.specifications.IsEqualSpecification;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class TaskRepository extends AbstractRepository<Task>{
+public class TaskRepository extends BaseRepository<Task>{
 
     private TaskRepository() {}
 
     @Override
     protected Class<Task> getEntityClass() {
         return Task.class;
-    }
-    public List<Task> getAllTasks() {
-        return super.findBySpecification(null);
     }
 
     public Task getTaskByTitle(String title) {
@@ -36,7 +34,7 @@ public class TaskRepository extends AbstractRepository<Task>{
     public static TaskRepository getInstance() {
         if (TaskRepository.SingletonHolder.INSTANCE.entityManager == null)
             TaskRepository.SingletonHolder.INSTANCE.entityManager = Persistence
-                    .createEntityManagerFactory("local-pg")
+                    .createEntityManagerFactory(Settings.getPersistenceProviderName())
                     .createEntityManager();
 
         return TaskRepository.SingletonHolder.INSTANCE;
