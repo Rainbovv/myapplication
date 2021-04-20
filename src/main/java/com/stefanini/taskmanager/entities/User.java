@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends AbstractEntity {
 
     @Column(name = "first_name", length = 50)
     private String firstName;
@@ -39,14 +35,6 @@ public class User {
 
     public User() {
 
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getFirstName() {

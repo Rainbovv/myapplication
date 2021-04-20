@@ -1,8 +1,10 @@
-package application.repositories;
+package com.stefanini.taskmanager.repositories;
 
 import static org.junit.jupiter.api.Assertions.*;
-import application.entities.Task;
 import org.junit.jupiter.api.*;
+
+import com.stefanini.taskmanager.dao.TaskRepository;
+import com.stefanini.taskmanager.entities.Task;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TaskRepositoryTest {

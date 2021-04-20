@@ -1,4 +1,4 @@
-package com.stefanini.taskmanager.repositories;
+package com.stefanini.taskmanager.dao;
 
 import com.stefanini.taskmanager.entities.User;
 import com.stefanini.taskmanager.tools.IsEqualSpecification;

@@ -4,13 +4,17 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import java.util.Arrays;
 
+import com.stefanini.taskmanager.dao.UserRepository;
+import com.stefanini.taskmanager.dao.factory.FactoryProvider;
+import com.stefanini.taskmanager.dao.factory.UserRepositoryFactory;
 import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.entities.User;
-import com.stefanini.taskmanager.repositories.UserRepository;
 
 public class Application {
 
-    static UserRepository userRepository = UserRepository.getInstance();
+	
+	
+    static UserRepository userRepository = ((UserRepositoryFactory)FactoryProvider.getFactory(User.class)).getRepo();
 
     public static void main(String[] args) {
 

@@ -4,11 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity(name = "tasks")
-public class Task {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Task extends AbstractEntity {
 
     @Transient
     @ManyToMany
@@ -31,14 +27,6 @@ public class Task {
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Set<User> getUsers() {

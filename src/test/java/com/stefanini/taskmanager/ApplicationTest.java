@@ -1,10 +1,13 @@
-package application;
+package com.stefanini.taskmanager;
 
-import application.entities.Task;
-import application.entities.User;
-import application.repositories.TaskRepository;
-import application.repositories.UserRepository;
+
+
 import org.junit.jupiter.api.*;
+
+import com.stefanini.taskmanager.dao.TaskRepository;
+import com.stefanini.taskmanager.dao.UserRepository;
+import com.stefanini.taskmanager.entities.Task;
+import com.stefanini.taskmanager.entities.User;
 
 import static org.junit.jupiter.api.Assertions.*;
 

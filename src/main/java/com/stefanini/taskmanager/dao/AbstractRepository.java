@@ -1,5 +1,6 @@
-package com.stefanini.taskmanager.repositories;
+package com.stefanini.taskmanager.dao;
 
+import com.stefanini.taskmanager.entities.AbstractEntity;
 import com.stefanini.taskmanager.tools.AbstractSpecification;
 
 import javax.persistence.EntityManager;
@@ -9,7 +10,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public abstract class AbstractRepository<T> {
+public abstract class AbstractRepository<T extends AbstractEntity> {
 
     protected EntityManager entityManager;
     protected abstract Class<T> getEntityClass();
