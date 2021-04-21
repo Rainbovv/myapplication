@@ -3,7 +3,7 @@ package com.stefanini.taskmanager.repositories;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
-import com.stefanini.taskmanager.dao.TaskRepository;
+import com.stefanini.taskmanager.dao.impl.TaskRepository;
 import com.stefanini.taskmanager.entities.Task;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

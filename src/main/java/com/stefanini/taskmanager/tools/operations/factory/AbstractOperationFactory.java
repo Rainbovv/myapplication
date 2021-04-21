@@ -4,5 +4,5 @@ import com.stefanini.taskmanager.tools.operations.Operation;
 
 public interface AbstractOperationFactory {
 
-    Operation getOperation(String[] arg) throws Exception;
+    Operation getOperation(String[] arg);
 }

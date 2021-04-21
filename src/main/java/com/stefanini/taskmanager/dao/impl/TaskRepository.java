@@ -1,12 +1,11 @@
-package com.stefanini.taskmanager.dao;
+package com.stefanini.taskmanager.dao.impl;
 
+import com.stefanini.taskmanager.dao.BaseRepository;
 import com.stefanini.taskmanager.entities.Task;
-import com.stefanini.taskmanager.settings.Settings;
 import com.stefanini.taskmanager.tools.specifications.IsEqualSpecification;
-import javax.persistence.Persistence;
 import java.util.List;
 
-public class TaskRepository extends BaseRepository<Task>{
+public class TaskRepository extends BaseRepository<Task> {
 
     private TaskRepository() {}
 
@@ -32,11 +31,9 @@ public class TaskRepository extends BaseRepository<Task>{
     }
 
     public static TaskRepository getInstance() {
-        if (TaskRepository.SingletonHolder.INSTANCE.entityManager == null)
-            TaskRepository.SingletonHolder.INSTANCE.entityManager = Persistence
-                    .createEntityManagerFactory(Settings.getPersistenceProviderName())
-                    .createEntityManager();
+        if (SingletonHolder.INSTANCE.entityManager == null)
+            SingletonHolder.INSTANCE.entityManager = getEntityManager();
 
-        return TaskRepository.SingletonHolder.INSTANCE;
+        return SingletonHolder.INSTANCE;
     }
 }

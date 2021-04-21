@@ -1,4 +1,4 @@
-package com.stefanini.taskmanager.tools.operations;
+package com.stefanini.taskmanager.tools.operations.impl.user;
 
 import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.entities.User;
@@ -12,7 +12,7 @@ public class AddTask extends UserOperationWithArgs {
     }
 
     @Override
-    public Boolean execute() {
+    public void execute() {
         parser.accepts("addTask");
         parser.accepts("tt").withRequiredArg();
         parser.accepts("td").withRequiredArg();
@@ -24,6 +24,6 @@ public class AddTask extends UserOperationWithArgs {
                 options.valueOf("td").toString());
         user.getTasks().add(task);
 
-        return userService.update(user);
+        userService.update(user);
     }
 }

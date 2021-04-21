@@ -2,7 +2,7 @@ package com.stefanini.taskmanager.services;
 
 import java.util.List;
 
-import com.stefanini.taskmanager.dao.UserRepository;
+import com.stefanini.taskmanager.dao.impl.UserRepository;
 import com.stefanini.taskmanager.dao.factory.RepositoryFactory;
 import com.stefanini.taskmanager.entities.User;
 

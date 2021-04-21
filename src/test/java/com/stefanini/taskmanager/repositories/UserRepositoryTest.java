@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.stefanini.taskmanager.entities.User;
 import org.junit.jupiter.api.*;
 
-import com.stefanini.taskmanager.dao.UserRepository;
+import com.stefanini.taskmanager.dao.impl.UserRepository;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserRepositoryTest {

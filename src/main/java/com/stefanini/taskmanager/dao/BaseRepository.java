@@ -1,8 +1,11 @@
 package com.stefanini.taskmanager.dao;
 
+import com.stefanini.taskmanager.config.Settings;
+import com.stefanini.taskmanager.dao.impl.TaskRepository;
 import com.stefanini.taskmanager.entities.AbstractEntity;
 import com.stefanini.taskmanager.tools.specifications.AbstractSpecification;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -81,5 +84,12 @@ public  abstract class BaseRepository<T extends AbstractEntity> implements Abstr
         if (!entityManager.getTransaction().isActive()) {
             entityManager.getTransaction().begin();
         }
+    }
+
+    protected static EntityManager getEntityManager() {
+
+            return Persistence.createEntityManagerFactory(
+                    Settings.getMySQLPersistenceProvider())
+                    .createEntityManager();
     }
 }

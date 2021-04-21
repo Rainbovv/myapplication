@@ -1,12 +1,11 @@
-package com.stefanini.taskmanager.dao;
+package com.stefanini.taskmanager.dao.impl;
 
+import com.stefanini.taskmanager.dao.BaseRepository;
 import com.stefanini.taskmanager.entities.User;
-import com.stefanini.taskmanager.settings.Settings;
 import com.stefanini.taskmanager.tools.specifications.IsEqualSpecification;
-import javax.persistence.Persistence;
 import java.util.List;
 
-public class UserRepository extends BaseRepository<User>{
+public class UserRepository extends BaseRepository<User> {
 
     private UserRepository() {}
 
@@ -33,9 +32,7 @@ public class UserRepository extends BaseRepository<User>{
 
     public static UserRepository getInstance() {
         if (SingletonHolder.INSTANCE.entityManager == null)
-            SingletonHolder.INSTANCE.entityManager = Persistence
-                    .createEntityManagerFactory(Settings.getPersistenceProviderName())
-                    .createEntityManager();
+            SingletonHolder.INSTANCE.entityManager = getEntityManager();
 
         return SingletonHolder.INSTANCE;
     }

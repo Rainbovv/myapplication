@@ -1,4 +1,4 @@
-package com.stefanini.taskmanager.tools.operations;
+package com.stefanini.taskmanager.tools.operations.impl.user;
 
 import joptsimple.OptionParser;
 
@@ -9,10 +9,9 @@ public class ShowUserTasks extends UserOperationWithArgs {
     }
 
     @Override
-    public Boolean execute() {
+    public void execute() {
         parser.accepts("un").withRequiredArg();
         userService.findUserByUserName(parser.parse(args).valueOf("un").toString())
                 .getTasks().forEach(System.out::println);
-        return true;
     }
 }

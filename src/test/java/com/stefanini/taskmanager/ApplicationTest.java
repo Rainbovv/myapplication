@@ -1,11 +1,8 @@
 package com.stefanini.taskmanager;
 
-
-
 import org.junit.jupiter.api.*;
-
-import com.stefanini.taskmanager.dao.TaskRepository;
-import com.stefanini.taskmanager.dao.UserRepository;
+import com.stefanini.taskmanager.dao.impl.TaskRepository;
+import com.stefanini.taskmanager.dao.impl.UserRepository;
 import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.entities.User;
 

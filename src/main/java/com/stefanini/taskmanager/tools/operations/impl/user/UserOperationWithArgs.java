@@ -1,4 +1,4 @@
-package com.stefanini.taskmanager.tools.operations;
+package com.stefanini.taskmanager.tools.operations.impl.user;
 
 import joptsimple.OptionParser;
 
