@@ -7,3 +7,4 @@
 /.settings/
 Task1
 *.iml
+/src/main/resources/config.properties
