@@ -9,19 +9,31 @@
         <Logger name="com.stefanini.taskmanager.Application" level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Logger name="com.stefanini.taskmanager.tools.operations.factory.OperationFactory"
+        <Logger name="com.stefanini.taskmanager.operation.factory.OperationFactoryImpl"
                 level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Logger name="com.stefanini.taskmanager.tools.operations.impl.user.CreateUser"
+        <Logger name="com.stefanini.taskmanager.operation.user.CreateUser"
                 level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-         <Logger name="com.stefanini.taskmanager.tools.operations.impl.user.AddTask"
+         <Logger name="com.stefanini.taskmanager.operation.relation.AddTask"
                 level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-         <Logger name="com.stefanini.taskmanager.dao.impl.UserRepository"
+        <Logger name="com.stefanini.taskmanager.operation.relation.ShowUserTasks"
+                level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.stefanini.taskmanager.service.impl.UserServiceImpl"
+                level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.stefanini.taskmanager.service.impl.TaskServiceImpl"
+                level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.stefanini.taskmanager.service.impl.UserTaskServiceImpl"
                 level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
