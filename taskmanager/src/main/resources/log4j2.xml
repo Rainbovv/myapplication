@@ -6,7 +6,8 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.stefanini.taskmanager.Application" level="trace" additivity="false">
+        <Logger name="com.stefanini.taskmanager.Application"
+                level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="com.stefanini.taskmanager.operation.factory.OperationFactoryImpl"

@@ -7,4 +7,6 @@
 /.settings/
 Task1
 *.iml
-/src/main/resources/config.properties
+/dao-service/src/main/resources/config.properties
+/dao-service/target/
+/taskmanager/target/

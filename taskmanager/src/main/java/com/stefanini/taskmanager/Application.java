@@ -11,9 +11,11 @@ import java.util.Arrays;
 
 public class Application {
 
-    static final Logger logger = LogManager.getLogger(Application.class);
+    static Logger logger;
 
     public static void main(String[] args) {
+
+        logger = LogManager.getLogger(Application.class);
 
         logger.trace("Application started.");
         logger.debug("Program arguments: " + Arrays.toString(args));

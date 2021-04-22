@@ -2,7 +2,6 @@ package com.stefanini.taskmanager.service.impl;
 
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
 import com.stefanini.taskmanager.dao.impl.TaskDaoImpl;
-import com.stefanini.taskmanager.dao.impl.UserDaoImpl;
 import com.stefanini.taskmanager.entities.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +17,9 @@ public class TaskServiceImpl {
     private TaskServiceImpl() {}
 
     public boolean create(Task task) {
+
+        logger.trace("create() started!");
+
         try {
             return taskDao.create(task);
 

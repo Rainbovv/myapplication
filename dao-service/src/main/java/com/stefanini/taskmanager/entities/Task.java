@@ -1,7 +1,5 @@
 package com.stefanini.taskmanager.entities;
 
-import java.util.Set;
-
 
 public class Task extends AbstractEntity {
 
