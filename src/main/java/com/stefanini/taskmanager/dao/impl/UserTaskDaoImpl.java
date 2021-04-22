@@ -4,7 +4,6 @@ import com.stefanini.taskmanager.config.DataSourceProvider;
 import com.stefanini.taskmanager.dao.AbstractDao;
 import com.stefanini.taskmanager.dao.UserTaskDao;
 import com.stefanini.taskmanager.entities.UserTaskRelation;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,8 +14,7 @@ import java.util.List;
 public class UserTaskDaoImpl extends AbstractDao<UserTaskRelation> implements UserTaskDao {
 
 
-    private UserTaskDaoImpl() {
-    }
+    private UserTaskDaoImpl() {}
 
     @Override
     protected UserTaskRelation convertToObject(ResultSet resultSet) throws SQLException {

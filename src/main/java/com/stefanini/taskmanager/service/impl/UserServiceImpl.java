@@ -1,6 +1,7 @@
 package com.stefanini.taskmanager.service.impl;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
@@ -11,17 +12,24 @@ import org.apache.logging.log4j.Logger;
 
 public class UserServiceImpl {
 
-	private Logger logger = LogManager.getLogger(UserServiceImpl.class);
-
-	private UserDaoImpl userDaoImpl = DaoFactoryImpl.getInstance().getUserDao();
+	private Logger logger;
+	private UserDaoImpl userDao;
 
 	private UserServiceImpl() {}
 
 	public boolean create(User user) {
+
+		logger.trace("create() started!");
 		try {
-			return userDaoImpl.create(user);
+			userDao.create(user);
+
+			logger.trace("New user created!");
+
+			return true;
 
 		} catch (SQLException throwable) {
+			if (throwable instanceof SQLIntegrityConstraintViolationException)
+				logger.error("Such user already exists!");
 			logger.error(throwable.getMessage());
 		}
 
@@ -30,20 +38,24 @@ public class UserServiceImpl {
 
 	public List<User> findAllUsers() {
 
+		logger.trace("findAllUsers() started!");
+
 		List<User> users = new ArrayList<>();
 
 		try {
-			users = userDaoImpl.getAll();
+			users = userDao.getAll();
 
 		} catch (SQLException throwable) {
 			logger.error(throwable.getMessage());
 		}
+
+		logger.debug("Users found: " + users.size());
 		return users;
 	}
 
 	public User findUserByUserName(String userName) {
 		try {
-			return userDaoImpl.getUserByUserName(userName);
+			return userDao.getUserByUserName(userName);
 
 		} catch (SQLException throwable) {
 			logger.error(throwable.getMessage());
@@ -53,7 +65,7 @@ public class UserServiceImpl {
 
 	public Boolean update(User user) {
 		try {
-			return userDaoImpl.update(user);
+			return userDao.update(user);
 
 		} catch (SQLException throwable) {
 			logger.error(throwable.getMessage());
@@ -66,6 +78,13 @@ public class UserServiceImpl {
 	}
 
 	public static UserServiceImpl getInstance() {
-		return SingletonHolder.INSTANCE;
+		UserServiceImpl userService = SingletonHolder.INSTANCE;
+
+		if (userService.logger == null)
+			userService.logger = LogManager.getLogger(UserServiceImpl.class);
+		if (userService.userDao == null)
+			userService.userDao = DaoFactoryImpl.getInstance().getUserDao();
+
+		return userService;
 	}
 }

@@ -13,10 +13,13 @@ public class AddTask extends UserTaskOperation {
         super(args, parser);
         logger = LogManager.getLogger(AddTask.class);
         relationService = UserTaskServiceImpl.getInstance();
+        logger.trace("Creating AddTask operation object!");
     }
 
     @Override
     public void execute() {
+        logger.trace("execute() started");
+        logger.trace("Starting arguments parsing");
 
         parser.accepts("addTask");
         parser.accepts("tt").requiredIf("addTask").withRequiredArg();

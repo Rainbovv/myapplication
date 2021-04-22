@@ -22,7 +22,7 @@ public class OperationFactoryImpl implements OperationFactory {
     @Override
     public Operation getOperation(String[] args) {
 
-        logger.trace("Checking the 1'st argument!");
+        logger.trace("getOperation method started!");
 
         switch (args[0]) {
             case "-createUser":
@@ -49,12 +49,14 @@ public class OperationFactoryImpl implements OperationFactory {
     }
 
     public static OperationFactoryImpl getInstance() {
-        if (SingletonHolder.INSTANCE.parser == null)
-            SingletonHolder.INSTANCE.parser = new OptionParser();
-        if (SingletonHolder.INSTANCE.logger == null)
-            SingletonHolder.INSTANCE.logger = LogManager.getLogger(OperationFactoryImpl.class);
 
+        OperationFactoryImpl operationFactory = SingletonHolder.INSTANCE;
 
-        return SingletonHolder.INSTANCE;
+        if (operationFactory.parser == null)
+            operationFactory.parser = new OptionParser();
+        if (operationFactory.logger == null)
+            operationFactory.logger = LogManager.getLogger(OperationFactoryImpl.class);
+
+        return operationFactory;
     }
 }

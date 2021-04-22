@@ -8,10 +8,13 @@ public class ShowAllUsers extends UserOperation {
     public ShowAllUsers() {
         logger = LogManager.getLogger(ShowAllUsers.class);
         userService = UserServiceImpl.getInstance();
+        logger.trace("Creating ShowAllUser operation object!");
     }
 
     @Override
     public void execute() {
+
+        logger.trace("execute() started");
         userService.findAllUsers().forEach(System.out::println);
     }
 }

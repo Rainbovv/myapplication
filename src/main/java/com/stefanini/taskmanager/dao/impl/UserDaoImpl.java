@@ -1,8 +1,8 @@
 package com.stefanini.taskmanager.dao.impl;
 
-
 import com.stefanini.taskmanager.config.DataSourceProvider;
 import com.stefanini.taskmanager.dao.AbstractDao;
+import com.stefanini.taskmanager.dao.UserDao;
 import com.stefanini.taskmanager.entities.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl extends AbstractDao<User> implements com.stefanini.taskmanager.dao.UserDao {
+public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     private UserDaoImpl() {}
 

@@ -2,6 +2,7 @@ package com.stefanini.taskmanager.dao.impl;
 
 import com.stefanini.taskmanager.config.DataSourceProvider;
 import com.stefanini.taskmanager.dao.AbstractDao;
+import com.stefanini.taskmanager.dao.TaskDao;
 import com.stefanini.taskmanager.entities.Task;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskDaoImpl extends AbstractDao<Task> implements com.stefanini.taskmanager.dao.TaskDao {
+public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
 
     private TaskDaoImpl() {}
 
