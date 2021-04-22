@@ -16,6 +16,12 @@ public class TaskServiceImpl {
 
     private TaskServiceImpl() {}
 
+    /**
+     * Receives an entity of type Task and persists it in DB
+     * using TaskDaoImpl
+     * @param task of type Task
+     * @return (rows affected == 1) ? true : false
+     */
     public boolean create(Task task) {
 
         logger.trace("create() started!");

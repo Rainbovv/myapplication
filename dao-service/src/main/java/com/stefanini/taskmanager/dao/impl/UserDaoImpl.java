@@ -26,6 +26,13 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
         return user;
     }
+
+    /**
+     * Receives an entity of type User and persists it in DB
+     * @param entity of type User
+     * @return (rows affected == 1) ? true : false
+     * @throws SQLException when database access error occurs
+     */
     @Override
     public boolean create(User entity) throws SQLException {
 
@@ -38,6 +45,12 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         return preparedStatement.executeUpdate() == 1;
     }
 
+    /**
+     * Receives an entity of type User and updates it in DB
+     * @param entity of type User
+     * @return (rows affected == 1) ? true : false
+     * @throws SQLException when database access error occurs
+     */
     @Override
     public boolean update(User entity) throws SQLException {
 
@@ -52,6 +65,12 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         return preparedStatement.executeUpdate() == 1;
     }
 
+    /**
+     * Receives an entity of type User and removes it from DB
+     * @param entity of type User
+     * @return (rows affected == 1) ? true : false
+     * @throws SQLException when database access error occurs
+     */
     @Override
     public boolean remove(User entity) throws SQLException {
 
@@ -60,6 +79,11 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         return statement.executeUpdate("DELETE FROM users WHERE id=" + entity.getId()) == 1;
     }
 
+    /**
+     * Selects all the records from DB.users
+     * @return  a List of User entities from persisted records
+     * @throws SQLException when database access error occurs
+     */
     @Override
     public List<User> getAll() throws SQLException {
 
@@ -79,6 +103,12 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         return users;
     }
 
+    /**
+     * Receives a String which is used to select a User by user_name from DB
+     * @param userName of type String
+     * @return an entity of type User if the record exists
+     * @throws SQLException when database access error occurs
+     */
     public User getUserByUserName(String userName) throws SQLException {
 
         PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()

@@ -1,16 +1,16 @@
 package com.stefanini.taskmanager.entities;
 
-public class UserTaskRelation extends AbstractEntity {
+public class UserTaskPivot extends AbstractEntity {
 
     private Long userId;
     private Long taskId;
 
-    public UserTaskRelation(Long userId, Long taskId) {
+    public UserTaskPivot(Long userId, Long taskId) {
         this.userId = userId;
         this.taskId = taskId;
     }
 
-    public UserTaskRelation() {}
+    public UserTaskPivot() {}
 
     public Long getUserId() {
         return userId;

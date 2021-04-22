@@ -3,7 +3,7 @@ package com.stefanini.taskmanager.service.impl;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
 import com.stefanini.taskmanager.dao.impl.TaskDaoImpl;
 import com.stefanini.taskmanager.dao.impl.UserDaoImpl;
-import com.stefanini.taskmanager.dao.impl.UserTaskDaoImpl;
+import com.stefanini.taskmanager.dao.impl.PivotDaoImpl;
 import com.stefanini.taskmanager.entities.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,15 +12,22 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserTaskServiceImpl {
+public class PivotServiceImpl {
 
     private UserDaoImpl userDao;
     private TaskDaoImpl taskDao;
-    private UserTaskDaoImpl relationDao;
+    private PivotDaoImpl relationDao;
     private Logger logger;
 
-    private UserTaskServiceImpl(){}
+    private PivotServiceImpl(){}
 
+    /**
+     * Persists a new record in tasks table if it doesn't exist.
+     * Persists a new record in pivot table.
+     * @param task of type Task
+     * @param userName of type String
+     * @return (rows affected == 1) ? true : false
+     */
     public boolean addTask(Task task, String userName) {
 
         logger.trace("addTask() started!");
@@ -46,6 +53,11 @@ public class UserTaskServiceImpl {
         return false;
     }
 
+    /**
+     * Selects all the records assigned to the given user using PivotDaoImpl class
+     * @param userName of type String
+     * @return  a List of Task entities from persisted records
+     */
     public List<Task> findAllUserTasks(String userName) {
 
         logger.trace("findAllUserTasks() started!");
@@ -63,11 +75,11 @@ public class UserTaskServiceImpl {
     }
 
     private static class SingletonHolder {
-        private static final UserTaskServiceImpl INSTANCE = new UserTaskServiceImpl();
+        private static final PivotServiceImpl INSTANCE = new PivotServiceImpl();
     }
 
-    public static UserTaskServiceImpl getInstance() {
-        UserTaskServiceImpl relationService = SingletonHolder.INSTANCE;
+    public static PivotServiceImpl getInstance() {
+        PivotServiceImpl relationService = SingletonHolder.INSTANCE;
 
         if (relationService.relationDao == null)
             relationService.relationDao = DaoFactoryImpl.getInstance().getRelationDao();
@@ -76,7 +88,7 @@ public class UserTaskServiceImpl {
         if (relationService.taskDao == null)
             relationService.taskDao = DaoFactoryImpl.getInstance().getTaskDao();
         if (relationService.logger == null)
-            relationService.logger = LogManager.getLogger(UserTaskServiceImpl.class);
+            relationService.logger = LogManager.getLogger(PivotServiceImpl.class);
 
         return relationService;
     }

@@ -17,6 +17,11 @@ public class UserServiceImpl {
 
 	private UserServiceImpl() {}
 
+	/**
+	 * Receives an entity of type User and persists it in DB using UserDaoImpl class
+	 * @param user of type User
+	 * @return (rows affected == 1) ? true : false
+	 */
 	public boolean create(User user) {
 
 		logger.trace("create() started!");
@@ -36,6 +41,10 @@ public class UserServiceImpl {
 		return false;
 	}
 
+	/**
+	 * Selects all the records from DB.users using UserDaoImpl class
+	 * @return  a List of User entities from persisted records
+	 */
 	public List<User> findAllUsers() {
 
 		logger.trace("findAllUsers() started!");
@@ -53,6 +62,12 @@ public class UserServiceImpl {
 		return users;
 	}
 
+	/**
+	 * Receives a String which is used to select a User by user_name
+	 * from DB using UserDaoImpl class
+	 * @param userName of type String
+	 * @return an entity of type User if the record exists
+	 */
 	public User findUserByUserName(String userName) {
 		try {
 			return userDao.getUserByUserName(userName);
@@ -63,6 +78,12 @@ public class UserServiceImpl {
 		return null;
 	}
 
+	/**
+	 * Receives an entity of type User and updates it in DB
+	 * using UserDaoImpl class
+	 * @param user of type User
+	 * @return (rows affected == 1) ? true : false
+	 */
 	public Boolean update(User user) {
 		try {
 			return userDao.update(user);

@@ -26,6 +26,12 @@ public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
         return task;
     }
 
+    /**
+     * Receives an entity of type Task and persists it in DB
+     * @param entity of type Task
+     * @return (rows affected == 1) ? true : false
+     * @throws SQLException when database access error occurs
+     */
     @Override
     public boolean create(Task entity) throws SQLException {
         PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
@@ -36,18 +42,12 @@ public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
         return preparedStatement.executeUpdate() == 1;
     }
 
-    public Task getByTitle(String title) throws SQLException {
-
-        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
-                .prepareStatement("SELECT * FROM tasks WHERE title=?");
-        preparedStatement.setString(1, title);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-
-        return convertToObject(resultSet);
-    }
-
+    /**
+     * Receives an entity of type Task and updates it in DB
+     * @param entity of type Task
+     * @return (rows affected == 1) ? true : false
+     * @throws SQLException when database access error occurs
+     */
     @Override
     public boolean update(Task entity) throws SQLException {
         PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
@@ -60,6 +60,12 @@ public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
         return preparedStatement.executeUpdate() == 1;
     }
 
+    /**
+     * Receives an entity of type Task and removes it from DB
+     * @param entity of type Task
+     * @return (rows affected == 1) ? true : false
+     * @throws SQLException when database access error occurs
+     */
     @Override
     public boolean remove(Task entity) throws SQLException {
         Statement statement = DataSourceProvider.getMysqlConnection().createStatement();
@@ -67,6 +73,11 @@ public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
         return statement.executeUpdate("DELETE FROM tasks WHERE id=" + entity.getId()) == 1;
     }
 
+    /**
+     * Selects all the records from DB.tasks
+     * @return  a List of Task entities from persisted records
+     * @throws SQLException when database access error occurs
+     */
     @Override
     public List<Task> getAll() throws SQLException {
         Statement statement = DataSourceProvider.getMysqlConnection()
@@ -83,6 +94,31 @@ public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
         return tasks;
     }
 
+    /**
+     * Receives a String which is used to select a Task by title from DB
+     * @param title of type String
+     * @return  an entity of type Task
+     * @throws SQLException when database access error occurs
+     */
+    public Task getByTitle(String title) throws SQLException {
+
+        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                .prepareStatement("SELECT * FROM tasks WHERE title=?");
+        preparedStatement.setString(1, title);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+
+        return convertToObject(resultSet);
+    }
+
+    /**
+     * Selects all the records assigned to the given user
+     * from tasks using JOIN and WHERE clauses
+     * @param userName of type String
+     * @return  a List of Task entities from persisted records
+     * @throws SQLException when database access error occurs
+     */
     public List<Task> getAllByUserName(String userName) throws SQLException {
 
         PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()

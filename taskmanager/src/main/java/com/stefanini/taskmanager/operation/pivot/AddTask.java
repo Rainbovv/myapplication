@@ -1,18 +1,18 @@
-package com.stefanini.taskmanager.operation.relation;
+package com.stefanini.taskmanager.operation.pivot;
 
 import com.stefanini.taskmanager.entities.Task;
-import com.stefanini.taskmanager.service.impl.UserTaskServiceImpl;
+import com.stefanini.taskmanager.service.impl.PivotServiceImpl;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.logging.log4j.LogManager;
 
-public class AddTask extends UserTaskOperation {
+public class AddTask extends PivotOperation {
 
     public AddTask(String[] args, OptionParser parser) {
         super(args, parser);
         logger = LogManager.getLogger(AddTask.class);
-        relationService = UserTaskServiceImpl.getInstance();
+        relationService = PivotServiceImpl.getInstance();
         logger.trace("Creating AddTask operation object!");
     }
 
