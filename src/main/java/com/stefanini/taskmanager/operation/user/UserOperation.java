@@ -8,4 +8,5 @@ public abstract class UserOperation implements Operation {
 
     protected UserServiceImpl userService;
     protected Logger logger;
+
 }

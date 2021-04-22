@@ -25,6 +25,10 @@
                 level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="com.stefanini.taskmanager.operation.user.ShowAllUsers"
+                level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
         <Logger name="com.stefanini.taskmanager.service.impl.UserServiceImpl"
                 level="trace" additivity="false">
             <AppenderRef ref="Console"/>

@@ -75,6 +75,7 @@ public class UserDaoImpl extends AbstractDao<User> implements com.stefanini.task
 
             users.add(user);
         }
+
         return users;
     }
 
