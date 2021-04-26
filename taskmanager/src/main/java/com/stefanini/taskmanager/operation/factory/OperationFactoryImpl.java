@@ -1,10 +1,10 @@
 package com.stefanini.taskmanager.operation.factory;
 
 import com.stefanini.taskmanager.operation.*;
-import com.stefanini.taskmanager.operation.pivot.AddTask;
+import com.stefanini.taskmanager.operation.task.AddTask;
 import com.stefanini.taskmanager.operation.user.CreateUser;
 import com.stefanini.taskmanager.operation.user.ShowAllUsers;
-import com.stefanini.taskmanager.operation.pivot.ShowUserTasks;
+import com.stefanini.taskmanager.operation.task.ShowUserTasks;
 import joptsimple.OptionParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

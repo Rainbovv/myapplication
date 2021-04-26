@@ -4,6 +4,7 @@ import com.stefanini.taskmanager.config.DataSourceProvider;
 import com.stefanini.taskmanager.dao.AbstractDao;
 import com.stefanini.taskmanager.dao.UserDao;
 import com.stefanini.taskmanager.entities.User;
+import org.apache.logging.log4j.LogManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,98 +28,97 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         return user;
     }
 
-    /**
-     * Receives an entity of type User and persists it in DB
-     * @param entity of type User
-     * @return (rows affected == 1) ? true : false
-     * @throws SQLException when database access error occurs
-     */
     @Override
-    public boolean create(User entity) throws SQLException {
+    public Long create(User entity) {
+        long id = -1;
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("INSERT INTO users VALUES (null, ?, ?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, entity.getFirstName());
+            preparedStatement.setString(2, entity.getLastName());
+            preparedStatement.setString(3, entity.getUserName());
 
-        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
-                .prepareStatement("INSERT INTO users VALUES (null, ?, ?, ?)");
-        preparedStatement.setString(1, entity.getFirstName());
-        preparedStatement.setString(2, entity.getLastName());
-        preparedStatement.setString(3, entity.getUserName());
+            if (preparedStatement.executeUpdate() != 1)
+                return (long) -1;
 
-        return preparedStatement.executeUpdate() == 1;
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+
+            id = resultSet.getLong(1);
+            logger.trace("New user created!");
+
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return id;
     }
 
-    /**
-     * Receives an entity of type User and updates it in DB
-     * @param entity of type User
-     * @return (rows affected == 1) ? true : false
-     * @throws SQLException when database access error occurs
-     */
     @Override
-    public boolean update(User entity) throws SQLException {
+    public boolean update(User entity) {
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("UPDATE users SET first_name=?, last_name=?, user_name=? WHERE id=?");
 
-        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
-                .prepareStatement("UPDATE users SET first_name=?, last_name=?, user_name=? WHERE id=?");
+            preparedStatement.setString(1, entity.getFirstName());
+            preparedStatement.setString(2, entity.getLastName());
+            preparedStatement.setString(3, entity.getUserName());
+            preparedStatement.setLong(4, entity.getId());
 
-        preparedStatement.setString(1, entity.getFirstName());
-        preparedStatement.setString(2, entity.getLastName());
-        preparedStatement.setString(3, entity.getUserName());
-        preparedStatement.setLong(4, entity.getId());
-
-        return preparedStatement.executeUpdate() == 1;
+            return preparedStatement.executeUpdate() == 1;
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return false;
     }
 
-    /**
-     * Receives an entity of type User and removes it from DB
-     * @param entity of type User
-     * @return (rows affected == 1) ? true : false
-     * @throws SQLException when database access error occurs
-     */
     @Override
-    public boolean remove(User entity) throws SQLException {
-
+    public boolean remove(User entity) {
+        try {
             Statement statement = DataSourceProvider.getMysqlConnection().createStatement();
 
-        return statement.executeUpdate("DELETE FROM users WHERE id=" + entity.getId()) == 1;
+            return statement.executeUpdate("DELETE FROM users WHERE id=" + entity.getId()) == 1;
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return false;
     }
 
-    /**
-     * Selects all the records from DB.users
-     * @return  a List of User entities from persisted records
-     * @throws SQLException when database access error occurs
-     */
     @Override
-    public List<User> getAll() throws SQLException {
-
-        Statement statement = DataSourceProvider.getMysqlConnection()
-                .createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
-
+    public List<User> getAll() {
         List<User> users = new ArrayList<>();
+        try {
+            Statement statement = DataSourceProvider.getMysqlConnection()
+                    .createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
 
-        while (resultSet.next()) {
+            while (resultSet.next()) {
 
-            User user = convertToObject(resultSet);
+                User user = convertToObject(resultSet);
 
-            users.add(user);
+                users.add(user);
+            }
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
         }
-
         return users;
     }
 
-    /**
-     * Receives a String which is used to select a User by user_name from DB
-     * @param userName of type String
-     * @return an entity of type User if the record exists
-     * @throws SQLException when database access error occurs
-     */
-    public User getUserByUserName(String userName) throws SQLException {
+    @Override
+    public User getUserByUserName(String userName) {
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("SELECT * FROM users WHERE user_name=?");
+            preparedStatement.setString(1, userName);
 
-        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
-                .prepareStatement("SELECT * FROM users WHERE user_name=?");
-        preparedStatement.setString(1, userName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
 
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-
-        return convertToObject(resultSet);
+            return convertToObject(resultSet);
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return null;
     }
 
     private static class SingletonHolder {
@@ -126,6 +126,9 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     public static UserDaoImpl getInstance() {
+        if (SingletonHolder.INSTANCE.logger == null)
+            SingletonHolder.INSTANCE.logger = LogManager.getLogger(UserDaoImpl.class);
+
         return SingletonHolder.INSTANCE;
     }
 }

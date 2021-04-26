@@ -4,12 +4,15 @@ import com.stefanini.taskmanager.config.DataSourceProvider;
 import com.stefanini.taskmanager.dao.AbstractDao;
 import com.stefanini.taskmanager.dao.TaskDao;
 import com.stefanini.taskmanager.entities.Task;
+import org.apache.logging.log4j.LogManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
 
@@ -26,115 +29,166 @@ public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
         return task;
     }
 
-    /**
-     * Receives an entity of type Task and persists it in DB
-     * @param entity of type Task
-     * @return (rows affected == 1) ? true : false
-     * @throws SQLException when database access error occurs
-     */
     @Override
-    public boolean create(Task entity) throws SQLException {
-        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
-                .prepareStatement("INSERT INTO tasks VALUES (null,?,?)");
-        preparedStatement.setString(1, entity.getDescription());
-        preparedStatement.setString(2, entity.getTitle());
+    public Long create(Task entity) {
+        long id = -1;
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("INSERT INTO tasks VALUES (null,?,?)",
+                            Statement.RETURN_GENERATED_KEYS);
 
-        return preparedStatement.executeUpdate() == 1;
+            preparedStatement.setString(1, entity.getDescription());
+            preparedStatement.setString(2, entity.getTitle());
+
+            if (preparedStatement.executeUpdate() != 1)
+                return id;
+
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+
+            id = resultSet.getLong(1);
+            logger.trace("New task created!");
+
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return id;
     }
 
-    /**
-     * Receives an entity of type Task and updates it in DB
-     * @param entity of type Task
-     * @return (rows affected == 1) ? true : false
-     * @throws SQLException when database access error occurs
-     */
     @Override
-    public boolean update(Task entity) throws SQLException {
-        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
-                .prepareStatement("UPDATE tasks SET description=?, title=? WHERE id=?");
+    public boolean update(Task entity) {
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("UPDATE tasks SET description=?, title=? WHERE id=?");
 
-        preparedStatement.setString(1, entity.getDescription());
-        preparedStatement.setString(2, entity.getTitle());
-        preparedStatement.setLong(3, entity.getId());
+            preparedStatement.setString(1, entity.getDescription());
+            preparedStatement.setString(2, entity.getTitle());
+            preparedStatement.setLong(3, entity.getId());
 
-        return preparedStatement.executeUpdate() == 1;
+            return preparedStatement.executeUpdate() == 1;
+
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return false;
     }
 
-    /**
-     * Receives an entity of type Task and removes it from DB
-     * @param entity of type Task
-     * @return (rows affected == 1) ? true : false
-     * @throws SQLException when database access error occurs
-     */
     @Override
-    public boolean remove(Task entity) throws SQLException {
-        Statement statement = DataSourceProvider.getMysqlConnection().createStatement();
+    public boolean remove(Task entity) {
+        try {
+            Statement statement = DataSourceProvider.getMysqlConnection().createStatement();
 
-        return statement.executeUpdate("DELETE FROM tasks WHERE id=" + entity.getId()) == 1;
+            return statement.executeUpdate("DELETE FROM tasks WHERE id=" + entity.getId()) == 1;
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return false;
     }
 
-    /**
-     * Selects all the records from DB.tasks
-     * @return  a List of Task entities from persisted records
-     * @throws SQLException when database access error occurs
-     */
     @Override
-    public List<Task> getAll() throws SQLException {
-        Statement statement = DataSourceProvider.getMysqlConnection()
-                .createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM tasks");
-
+    public List<Task> getAll() {
         List<Task> tasks = new ArrayList<>();
+        try {
+            Statement statement = DataSourceProvider.getMysqlConnection()
+                    .createStatement();
 
-        while (resultSet.next()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM tasks");
 
-            Task task = convertToObject(resultSet);
-            tasks.add(task);
+            while (resultSet.next()) {
+
+                Task task = convertToObject(resultSet);
+                tasks.add(task);
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return tasks;
     }
 
-    /**
-     * Receives a String which is used to select a Task by title from DB
-     * @param title of type String
-     * @return  an entity of type Task
-     * @throws SQLException when database access error occurs
-     */
-    public Task getByTitle(String title) throws SQLException {
+    public Task getByTitle(String title) {
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("SELECT * FROM tasks WHERE title=?");
 
-        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
-                .prepareStatement("SELECT * FROM tasks WHERE title=?");
-        preparedStatement.setString(1, title);
+            preparedStatement.setString(1, title);
 
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
 
-        return convertToObject(resultSet);
+            return convertToObject(resultSet);
+
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return null;
     }
 
-    /**
-     * Selects all the records assigned to the given user
-     * from tasks using JOIN and WHERE clauses
-     * @param userName of type String
-     * @return  a List of Task entities from persisted records
-     * @throws SQLException when database access error occurs
-     */
-    public List<Task> getAllByUserName(String userName) throws SQLException {
-
-        PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
-                .prepareStatement("SELECT t.id, t.title, t.description FROM tasks t JOIN user_task ut ON " +
-                        "t.id=ut.task_id JOIN users u ON ut.user_id=u.id WHERE u.user_name=?");
-        preparedStatement.setString(1, userName);
-        ResultSet resultSet = preparedStatement.executeQuery();
+    public List<Task> getAllByUserName(String userName) {
 
         List<Task> tasks = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("SELECT t.id, t.title, t.description FROM tasks t JOIN user_task ut ON " +
+                            "t.id=ut.task_id JOIN users u ON ut.user_id=u.id WHERE u.user_name=?");
 
-        while (resultSet.next()) {
+            preparedStatement.setString(1, userName);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            Task task = convertToObject(resultSet);
-            tasks.add(task);
+            while (resultSet.next()) {
+
+                Task task = convertToObject(resultSet);
+                tasks.add(task);
+            }
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
         }
         return tasks;
+    }
+
+    public Long addTaskToUser(Map<String, Long> ids) {
+
+        logger.trace("Starting addTaskToUser()...");
+        long pivotId = -1;
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("INSERT INTO user_task VALUES (null ,? ,?)",
+                            Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setLong(1, ids.get("user_id"));
+            preparedStatement.setLong(2, ids.get("task_id"));
+
+            if (preparedStatement.executeUpdate() != 1)
+                return pivotId;
+
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+            pivotId = resultSet.getLong(1);
+
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return pivotId;
+    }
+
+    public Map<String, Long> getUserAndTaskId(String taskTitle, String userName) {
+
+        Map<String, Long> ids = new HashMap<>();
+        try {
+            PreparedStatement preparedStatement = DataSourceProvider.getMysqlConnection()
+                    .prepareStatement("SELECT u.id as user_id, t.id as task_id FROM users u " +
+                            "JOIN tasks t ON u.user_name =? AND t.title=?");
+            preparedStatement.setString(1, userName);
+            preparedStatement.setString(2, taskTitle);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            ids.put("user_id", resultSet.getLong("user_id"));
+            ids.put("task_id", resultSet.getLong("task_id"));
+        } catch (SQLException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return ids;
     }
 
     private static class SingletonHolder {
@@ -142,6 +196,9 @@ public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
     }
 
     public static TaskDaoImpl getInstance() {
+        if (SingletonHolder.INSTANCE.logger == null)
+            SingletonHolder.INSTANCE.logger = LogManager.getLogger(TaskDaoImpl.class);
+
         return TaskDaoImpl.SingletonHolder.INSTANCE;
     }
 }

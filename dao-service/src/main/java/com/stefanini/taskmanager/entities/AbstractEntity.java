@@ -1,6 +1,5 @@
 package com.stefanini.taskmanager.entities;
 
-
 public abstract class AbstractEntity {
 
     protected Long id;

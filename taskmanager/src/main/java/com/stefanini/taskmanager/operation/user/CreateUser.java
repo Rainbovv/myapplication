@@ -13,7 +13,6 @@ public class CreateUser extends UserOperationWithArgs {
     public CreateUser(String[] args, OptionParser parser) {
         super(args, parser);
         logger = LogManager.getLogger(CreateUser.class);
-        userService = UserServiceImpl.getInstance();
         logger.trace("Creating CreateUser operation object!");
     }
 

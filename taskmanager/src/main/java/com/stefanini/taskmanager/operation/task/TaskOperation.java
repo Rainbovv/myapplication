@@ -15,5 +15,6 @@ public abstract class TaskOperation implements Operation {
     public TaskOperation(String[] args, OptionParser parser) {
         this.args = args;
         this.parser = parser;
+        taskService = TaskServiceImpl.getInstance();
     }
 }

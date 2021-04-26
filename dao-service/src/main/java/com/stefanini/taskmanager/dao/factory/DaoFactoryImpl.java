@@ -2,7 +2,6 @@ package com.stefanini.taskmanager.dao.factory;
 
 import com.stefanini.taskmanager.dao.impl.TaskDaoImpl;
 import com.stefanini.taskmanager.dao.impl.UserDaoImpl;
-import com.stefanini.taskmanager.dao.impl.PivotDaoImpl;
 
 public class DaoFactoryImpl implements DaoFactory {
 
@@ -16,10 +15,6 @@ public class DaoFactoryImpl implements DaoFactory {
 	@Override
 	public TaskDaoImpl getTaskDao() {
 		return TaskDaoImpl.getInstance();
-	}
-
-	public PivotDaoImpl getRelationDao() {
-		return PivotDaoImpl.getInstance();
 	}
 
 	public static class SingletonHolder {

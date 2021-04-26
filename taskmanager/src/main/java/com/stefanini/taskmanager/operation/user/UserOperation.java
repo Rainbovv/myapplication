@@ -9,4 +9,7 @@ public abstract class UserOperation implements Operation {
     protected UserServiceImpl userService;
     protected Logger logger;
 
+    public UserOperation() {
+        this.userService = UserServiceImpl.getInstance();
+    }
 }
