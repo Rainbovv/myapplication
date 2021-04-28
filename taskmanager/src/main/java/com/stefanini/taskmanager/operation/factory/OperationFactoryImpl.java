@@ -1,10 +1,7 @@
 package com.stefanini.taskmanager.operation.factory;
 
 import com.stefanini.taskmanager.operation.*;
-import com.stefanini.taskmanager.operation.user.AddTask;
-import com.stefanini.taskmanager.operation.user.CreateUser;
-import com.stefanini.taskmanager.operation.user.ShowAllUsers;
-import com.stefanini.taskmanager.operation.user.ShowUserTasks;
+import com.stefanini.taskmanager.operation.user.*;
 import joptsimple.OptionParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,6 +34,8 @@ public class OperationFactoryImpl implements OperationFactory {
             case "-showTasks":
                 return new ShowUserTasks(args, parser);
 
+            case "-createUserAndAddTask":
+                return new CreateUserWithTasks(args, parser);
             default:
                 logger.error( "No such method: " + args[0] + ". Please use one of this arguments:" +
                         "\n-addTask; -createUser; -showAllUsers; -showTasks");

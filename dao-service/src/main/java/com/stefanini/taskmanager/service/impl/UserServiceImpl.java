@@ -2,8 +2,8 @@ package com.stefanini.taskmanager.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.stefanini.taskmanager.dao.UserDao;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
-import com.stefanini.taskmanager.dao.impl.UserDaoImpl;
 import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.entities.User;
 import com.stefanini.taskmanager.service.UserService;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceException;
 public class UserServiceImpl implements UserService {
 
 	private Logger logger;
-	private UserDaoImpl userDao;
+	private UserDao userDao;
 
 	private UserServiceImpl() {}
 
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 			userDao.commit();
 		}
 		catch (PersistenceException throwable) {
-			logger.error("User already exists!");
+			logger.warn("User already exists!");
 		}
 		catch (IllegalArgumentException throwable) {
 			logger.error(throwable.getMessage());
@@ -39,9 +39,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User update(User user) {
+
+		logger.trace("update() started!");
 		try {
 			user = userDao.update(user);
 			userDao.commit();
+			logger.debug("User: " + user.getUserName() + " updated!");
 		}
 		catch (IllegalArgumentException | PersistenceException throwable) {
 			logger.error(throwable.getMessage());
@@ -51,9 +54,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean remove(User user) {
+
+		logger.trace("remove() started!");
 		try {
 			userDao.remove(user);
 			userDao.commit();
+			logger.debug("User: " + user.getUserName() + " removed!");
 			return true;
 		}
 		catch (IllegalArgumentException throwable) {
@@ -75,6 +81,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findUserByUserName(String userName) {
+
+		logger.trace("findUserByUserName() started!");
 		try {
 			return userDao.getUserByUserName(userName);
 		}
@@ -86,6 +94,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<Task> findUserAllTasks(String userName) {
+
+		logger.trace("findUserAllTasks() started!");
 
 		List<Task> tasks = new ArrayList<>();
 
@@ -101,14 +111,51 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean addTask(Task task, String userName) {
 
+		logger.trace("addTask() started!");
 		User user = findUserByUserName(userName);
 
 		if (user != null) {
 			user.getTasks().add(task);
-			update(user);
-			return true;
+			try {
+				userDao.update(user);
+				userDao.commit();
+				logger.debug("The task with title: " + task.getTitle() +
+						"attached to the user: " + user.getUserName());
+				return true;
+			}
+			catch (IllegalArgumentException IAThrowable) {
+				logger.error(IAThrowable.getMessage());
+				userDao.rollback();
+			}
 		}
 		return false;
+	}
+
+	public User createUserAndAddTask(User user, Task task) {
+
+		logger.trace("createUserAndAddTask() started!");
+		try {
+			try {
+				user = userDao.getUserByUserName(user.getUserName());
+				logger.error("User already exists!");
+			}
+			catch (PersistenceException throwable) {
+
+				userDao.create(user);
+				logger.trace("New user created!");
+
+			}
+			user.getTasks().add(task);
+			userDao.update(user);
+			userDao.commit();
+			logger.debug("The task with title: " + task.getTitle() +
+					"attached to the user: " + user.getUserName());
+			}
+			catch (IllegalArgumentException IAThrowable) {
+				logger.error(IAThrowable.getMessage());
+				userDao.rollback();
+			}
+		return user;
 	}
 
 	private static class SingletonHolder {

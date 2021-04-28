@@ -31,4 +31,14 @@ public interface Dao<T extends AbstractEntity> {
      * @return a List entities from persisted records
      */
     List<T> getAll();
+
+    /**
+     * Ends transaction and commits changes to DB
+     */
+    void commit();
+
+    /**
+     *Rolls back the transaction.
+     */
+    void rollback();
 }

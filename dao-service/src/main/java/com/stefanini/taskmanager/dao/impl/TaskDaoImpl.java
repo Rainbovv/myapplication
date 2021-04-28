@@ -4,6 +4,7 @@ import com.stefanini.taskmanager.dao.AbstractDao;
 import com.stefanini.taskmanager.dao.TaskDao;
 import com.stefanini.taskmanager.entities.Task;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
 

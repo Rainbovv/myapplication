@@ -1,7 +1,6 @@
 package com.stefanini.taskmanager.dao;
 
 import com.stefanini.taskmanager.entities.User;
-import java.sql.SQLException;
 
 public interface UserDao extends Dao<User> {
 
@@ -10,5 +9,5 @@ public interface UserDao extends Dao<User> {
      * @param userName of type String
      * @return an entity of type User if the record exists
      */
-    User getUserByUserName(String userName) throws SQLException;
+    User getUserByUserName(String userName);
 }

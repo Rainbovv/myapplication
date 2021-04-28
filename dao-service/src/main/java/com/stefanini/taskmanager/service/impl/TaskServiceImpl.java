@@ -1,7 +1,7 @@
 package com.stefanini.taskmanager.service.impl;
 
+import com.stefanini.taskmanager.dao.TaskDao;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
-import com.stefanini.taskmanager.dao.impl.TaskDaoImpl;
 import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.service.TaskService;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +14,7 @@ import javax.persistence.PersistenceException;
 public class TaskServiceImpl implements TaskService {
 
     private Logger logger;
-    private TaskDaoImpl taskDao;
+    private TaskDao taskDao;
 
     private TaskServiceImpl() {}
 

@@ -4,6 +4,7 @@ import com.stefanini.taskmanager.dao.AbstractDao;
 import com.stefanini.taskmanager.dao.UserDao;
 import com.stefanini.taskmanager.entities.User;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 

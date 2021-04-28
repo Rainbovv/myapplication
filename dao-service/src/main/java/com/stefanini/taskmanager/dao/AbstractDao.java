@@ -61,6 +61,10 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
         entityManager.getTransaction().commit();
     }
 
+    public void rollback() {
+        entityManager.getTransaction().rollback();
+    }
+
     protected void checkTransaction() {
         if (!entityManager.getTransaction().isActive()) {
             entityManager.getTransaction().begin();

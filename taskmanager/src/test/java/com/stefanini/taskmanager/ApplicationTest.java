@@ -45,6 +45,17 @@ class ApplicationTest {
         assertNotEquals(userDao.getUserByUserName("TestUserName").getTasks().size(), 0);
     }
 
+    @Order(3)
+    @Test
+    void mainCreateUserAndAddTask() {
+        removeData();
+        String[] args = new String[]{"-createUserAndAddTask", "-fn=" + user.getFirstName(),
+                "-ln=" + user.getLastName(), "-un=" + user.getUserName(),
+                "-tt=" + task.getTitle(), "-td=" + task.getDescription()};
+        Application.main(args);
+        assertNotEquals(userDao.getUserByUserName("TestUserName").getTasks().size(), 0);
+    }
+
     @AfterAll
     static void removeData() {
         user = userDao.getUserByUserName(user.getUserName());
