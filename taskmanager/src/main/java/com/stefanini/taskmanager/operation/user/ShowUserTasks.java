@@ -1,11 +1,14 @@
-package com.stefanini.taskmanager.operation.task;
+package com.stefanini.taskmanager.operation.user;
 
+import com.stefanini.taskmanager.entities.Task;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.logging.log4j.LogManager;
 
-public class ShowUserTasks extends TaskOperation {
+import java.util.List;
+
+public class ShowUserTasks extends UserOperationWithArgs {
 
     public ShowUserTasks(String[] args, OptionParser parser) {
         super(args, parser);
@@ -23,8 +26,9 @@ public class ShowUserTasks extends TaskOperation {
         try {
             OptionSet options = parser.parse(args);
 
-            taskService.findAllUserTasks(options.valueOf("un").toString())
+            userService.findUserAllTasks(options.valueOf("un").toString())
                     .forEach(System.out::println);
+
         } catch (OptionException throwable) {
             logger.error(throwable.getMessage());
         }

@@ -1,7 +1,6 @@
 package com.stefanini.taskmanager.operation.user;
 
 import com.stefanini.taskmanager.entities.User;
-import com.stefanini.taskmanager.service.impl.UserServiceImpl;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -32,8 +31,8 @@ public class CreateUser extends UserOperationWithArgs {
             userService.create(new User(options.valueOf("fn").toString(),
                     options.valueOf("ln").toString(),
                     options.valueOf("un").toString()));
-
-        } catch (OptionException throwable) {
+        }
+        catch (OptionException throwable) {
             logger.error(throwable.getMessage());
         }
     }

@@ -5,20 +5,19 @@ import java.util.List;
 
 public interface Dao<T extends AbstractEntity> {
 
-
     /**
      * Receives an entity of type (T extends AbstractEntity) and persists it in DB
      * @param entity of type (T extends AbstractEntity)
      * @return entity persisted ? id of the persisted entity of type Long : -1
      */
-    Long create(T entity);
+    T create(T entity);
 
     /**
      * Receives an entity of type (T extends AbstractEntity) and updates it in DB
      * @param entity of type (T extends AbstractEntity)
      * @return (rows affected == 1) ? true : false
      */
-    boolean update(T entity);
+    T update(T entity);
 
     /**
      * Receives an entity of type (T extends AbstractEntity) and removes it from DB

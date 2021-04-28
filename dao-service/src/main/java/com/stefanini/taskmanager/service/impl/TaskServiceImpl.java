@@ -3,54 +3,70 @@ package com.stefanini.taskmanager.service.impl;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
 import com.stefanini.taskmanager.dao.impl.TaskDaoImpl;
 import com.stefanini.taskmanager.entities.Task;
+import com.stefanini.taskmanager.service.TaskService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.util.List;
-import java.util.Map;
+import javax.persistence.EntityExistsException;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 
-public class TaskServiceImpl {
+
+public class TaskServiceImpl implements TaskService {
 
     private Logger logger;
     private TaskDaoImpl taskDao;
 
     private TaskServiceImpl() {}
 
-    public Long create(Task task) {
-
-        logger.trace("create() started!");
-        long result = taskDao.create(task);
-
-        if (result == -1)
-            logger.error("Such task already exists!");
-        return result;
-    }
-
-    public List<Task> findAllUserTasks(String userName) {
-
-        logger.trace("findAllUserTasks() started!");
-        List<Task> tasks = taskDao.getAllByUserName(userName);
-
-        logger.debug("Tasks found: " + tasks.size());
-        return tasks;
-    }
-
-    public boolean addTask(Task task, String userName) {
-
-        logger.trace("addTask() started!");
-        boolean result = false;
-        create(task);
-
-        Map<String, Long> ids = taskDao.getUserAndTaskId(task.getTitle(), userName);
-
-        if (ids.get("user_id") != null || ids.get("task_id") != null) {
-            result = taskDao.addTaskToUser(ids) == 1;
-
-            if (!result)
-                logger.error("This task is already assigned to this user!");
-            else
-                logger.trace("Task added to user: " + userName);
+    @Override
+    public Task create(Task task) {
+        try {
+            task = taskDao.create(task);
+            logger.trace("New task created!");
+            taskDao.commit();
         }
-        return result;
+        catch (EntityExistsException throwable) {
+            logger.error("Task already exists!");
+        }
+        catch (IllegalArgumentException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return task;
+    }
+
+    @Override
+    public Task update(Task task) {
+        try {
+            taskDao.update(task);
+            taskDao.commit();
+        }
+        catch (IllegalArgumentException | PersistenceException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return task;
+    }
+
+    @Override
+    public boolean remove(Task task) {
+        try {
+            taskDao.remove(task);
+            taskDao.commit();
+            return true;
+        }
+        catch (IllegalArgumentException throwable) {
+            logger.error(throwable.getMessage());
+        }
+        return false;
+    }
+
+    public Task findByTitle(String title) {
+        try {
+            return taskDao.getByTitle(title);
+        }
+        catch (NoResultException throwable) {
+            logger.error("No such task!");
+        }
+        return null;
     }
 
     private static class SingletonHolder {
