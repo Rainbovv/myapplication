@@ -20,7 +20,7 @@ class ApplicationTest {
 
     @BeforeAll
     public static void prepareData() {
-        PersistenceProvider.setMySQLPersistenceProvider("local-mysql-test");
+        PersistenceProvider.setPersistenceUnitName("local-mysql-test");
         userDao = DaoFactoryImpl.getInstance().getUserDao();
         taskDao = DaoFactoryImpl.getInstance().getTaskDao();
         user = new User("TestFirstName", "TestLastName", "TestUserName" );
