@@ -9,11 +9,11 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.logging.log4j.LogManager;
 
-public class CreateUserWithTasks extends UserOperationWithArgs {
+public class CreateUserAndAddTask extends UserOperationWithArgs {
 
     private TaskService taskService;
 
-    public CreateUserWithTasks(String[] args, OptionParser parser) {
+    public CreateUserAndAddTask(String[] args, OptionParser parser) {
         super(args, parser);
         logger = LogManager.getLogger(AddTask.class);
         logger.trace("Creating AddTask operation object!");
@@ -34,7 +34,6 @@ public class CreateUserWithTasks extends UserOperationWithArgs {
         try {
             OptionSet options = parser.parse(args);
 
-
             Task task = taskService.findByTitle(options.valueOf("tt").toString());
 
             if (task == null) task = new Task(options.valueOf("tt").toString(),
@@ -43,16 +42,9 @@ public class CreateUserWithTasks extends UserOperationWithArgs {
 
             User user = new User(options.valueOf("fn").toString(), options.valueOf("ln").toString(),
                     options.valueOf("un").toString());
-
-            userService.createUserAndAddTask(user,task);
-
-//            Task persistedTask = taskService.findByTitle(task.getTitle());
-
-//            if (persistedTask == null)
-//                userService.addTask(task, options.valueOf("un").toString());
-//            else
-//                userService.addTask(persistedTask, options.valueOf("un").toString());
-        } catch (OptionException throwable) {
+            user = userService.createUserAndAddTask(user,task);
+        }
+        catch (OptionException throwable) {
             logger.error(throwable.getMessage());
         }
     }

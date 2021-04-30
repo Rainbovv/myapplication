@@ -29,8 +29,8 @@ public class ShowUserTasks extends UserOperationWithArgs {
             userService.findUserAllTasks(options.valueOf("un").toString())
                     .forEach(System.out::println);
 
-        } catch (OptionException throwable) {
-            logger.error(throwable.getMessage());
+        } catch (OptionException exception) {
+            logger.error(exception.getMessage());
         }
     }
 }

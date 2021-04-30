@@ -3,9 +3,7 @@ package com.stefanini.taskmanager.dao;
 import com.stefanini.taskmanager.config.PersistenceProvider;
 import com.stefanini.taskmanager.entities.AbstractEntity;
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.List;
-
 
 public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
 
@@ -17,7 +15,6 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     }
 
     @Override
-    @Transactional
     public T create(T entity) {
         checkTransaction();
 
@@ -28,7 +25,6 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     }
 
     @Override
-    @Transactional
     public T update(T entity) {
         checkTransaction();
 
@@ -36,7 +32,6 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     }
 
     @Override
-    @Transactional
     public boolean remove(T entity) {
         checkTransaction();
 

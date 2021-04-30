@@ -3,6 +3,7 @@ package com.stefanini.taskmanager.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import com.stefanini.taskmanager.dao.UserDao;
+import com.stefanini.taskmanager.dao.factory.DaoFactory;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
 import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.entities.User;
@@ -28,11 +29,13 @@ public class UserServiceImpl implements UserService {
 			logger.trace("New user created!");
 			userDao.commit();
 		}
-		catch (PersistenceException throwable) {
+		catch (PersistenceException exception) {
 			logger.warn("User already exists!");
+			userDao.rollback();
 		}
-		catch (IllegalArgumentException throwable) {
-			logger.error(throwable.getMessage());
+		catch (IllegalArgumentException exception) {
+			logger.error(exception.getMessage());
+			userDao.rollback();
 		}
 		return user;
 	}
@@ -46,8 +49,9 @@ public class UserServiceImpl implements UserService {
 			userDao.commit();
 			logger.debug("User: " + user.getUserName() + " updated!");
 		}
-		catch (IllegalArgumentException | PersistenceException throwable) {
-			logger.error(throwable.getMessage());
+		catch (IllegalArgumentException | PersistenceException exception) {
+			logger.error(exception.getMessage());
+			userDao.rollback();
 		}
 		return user;
 	}
@@ -62,8 +66,9 @@ public class UserServiceImpl implements UserService {
 			logger.debug("User: " + user.getUserName() + " removed!");
 			return true;
 		}
-		catch (IllegalArgumentException throwable) {
-			logger.error(throwable.getMessage());
+		catch (IllegalArgumentException exception) {
+			logger.error(exception.getMessage());
+			userDao.rollback();
 		}
 		return false;
 	}
@@ -86,7 +91,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			return userDao.getUserByUserName(userName);
 		}
-		catch (NoResultException throwable) {
+		catch (NoResultException exception) {
 			logger.error("No such user!");
 		}
 		return null;
@@ -120,17 +125,18 @@ public class UserServiceImpl implements UserService {
 				userDao.update(user);
 				userDao.commit();
 				logger.debug("The task with title: " + task.getTitle() +
-						"attached to the user: " + user.getUserName());
+						" attached to the user: " + user.getUserName());
 				return true;
 			}
-			catch (IllegalArgumentException IAThrowable) {
-				logger.error(IAThrowable.getMessage());
+			catch (IllegalArgumentException | IllegalStateException iException) {
+				logger.error(iException.getMessage());
 				userDao.rollback();
 			}
 		}
 		return false;
 	}
 
+	@Override
 	public User createUserAndAddTask(User user, Task task) {
 
 		logger.trace("createUserAndAddTask() started!");
@@ -139,22 +145,22 @@ public class UserServiceImpl implements UserService {
 				user = userDao.getUserByUserName(user.getUserName());
 				logger.error("User already exists!");
 			}
-			catch (PersistenceException throwable) {
+			catch (PersistenceException exception) {
 
 				userDao.create(user);
 				logger.trace("New user created!");
-
 			}
 			user.getTasks().add(task);
 			userDao.update(user);
 			userDao.commit();
 			logger.debug("The task with title: " + task.getTitle() +
 					"attached to the user: " + user.getUserName());
-			}
-			catch (IllegalArgumentException IAThrowable) {
-				logger.error(IAThrowable.getMessage());
-				userDao.rollback();
-			}
+		}
+		catch (IllegalArgumentException | IllegalStateException iException) {
+			logger.error(iException.getMessage());
+			userDao.rollback();
+			return null;
+		}
 		return user;
 	}
 
@@ -168,7 +174,8 @@ public class UserServiceImpl implements UserService {
 		if (userService.logger == null)
 			userService.logger = LogManager.getLogger(UserServiceImpl.class);
 		if (userService.userDao == null)
-			userService.userDao = DaoFactoryImpl.getInstance().getUserDao();
+			userService.userDao = (UserDao)DaoFactoryImpl.getInstance()
+					.getDao(DaoFactory.DaoType.USERDAO);
 
 		return userService;
 	}

@@ -1,9 +1,11 @@
 package com.stefanini.taskmanager.entities;
 
+import com.stefanini.taskmanager.util.annotation.NotifyWhenPersisting;
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity(name = "task")
+@NotifyWhenPersisting(entityType = NotifyWhenPersisting.entityType.TASK)
 public class Task extends AbstractEntity {
 
     @ManyToMany(cascade = CascadeType.ALL)

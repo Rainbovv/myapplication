@@ -1,20 +1,26 @@
 package com.stefanini.taskmanager.dao.factory;
 
+import com.stefanini.taskmanager.dao.Dao;
 import com.stefanini.taskmanager.dao.impl.TaskDaoImpl;
 import com.stefanini.taskmanager.dao.impl.UserDaoImpl;
+import com.stefanini.taskmanager.entities.AbstractEntity;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class DaoFactoryImpl implements DaoFactory {
 
 	private DaoFactoryImpl() {}
 
 	@Override
-	public UserDaoImpl getUserDao() {
-		return UserDaoImpl.getInstance();
-	}
+	public Dao<? extends AbstractEntity>  getDao(DaoType daoType) {
 
-	@Override
-	public TaskDaoImpl getTaskDao() {
-		return TaskDaoImpl.getInstance();
+		switch (daoType) {
+			case TASKDAO:
+				return TaskDaoImpl.getInstance();
+			case USERDAO:
+				return UserDaoImpl.getInstance();
+			default:
+				throw new NotImplementedException();
+		}
 	}
 
 	public static class SingletonHolder {

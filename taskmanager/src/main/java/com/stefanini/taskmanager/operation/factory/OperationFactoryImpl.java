@@ -19,7 +19,7 @@ public class OperationFactoryImpl implements OperationFactory {
     @Override
     public Operation getOperation(String[] args) {
 
-        logger.trace("getOperation method started!");
+        logger.trace("getOperation() started!");
 
         switch (args[0]) {
             case "-createUser":
@@ -35,7 +35,7 @@ public class OperationFactoryImpl implements OperationFactory {
                 return new ShowUserTasks(args, parser);
 
             case "-createUserAndAddTask":
-                return new CreateUserWithTasks(args, parser);
+                return new CreateUserAndAddTask(args, parser);
             default:
                 logger.error( "No such method: " + args[0] + ". Please use one of this arguments:" +
                         "\n-addTask; -createUser; -showAllUsers; -showTasks");

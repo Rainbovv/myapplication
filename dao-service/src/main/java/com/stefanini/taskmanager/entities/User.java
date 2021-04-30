@@ -1,10 +1,12 @@
 package com.stefanini.taskmanager.entities;
 
+import com.stefanini.taskmanager.util.annotation.NotifyWhenPersisting;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "user")
+@NotifyWhenPersisting(entityType = NotifyWhenPersisting.entityType.USER)
 public class User extends AbstractEntity {
 
     @Column(name = "first_name", length = 50)

@@ -32,8 +32,8 @@ public class CreateUser extends UserOperationWithArgs {
                     options.valueOf("ln").toString(),
                     options.valueOf("un").toString()));
         }
-        catch (OptionException throwable) {
-            logger.error(throwable.getMessage());
+        catch (OptionException exception) {
+            logger.error(exception.getMessage());
         }
     }
 }
