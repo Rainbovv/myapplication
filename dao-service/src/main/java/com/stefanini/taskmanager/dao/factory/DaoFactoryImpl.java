@@ -23,7 +23,7 @@ public class DaoFactoryImpl implements DaoFactory {
 		}
 	}
 
-	public static class SingletonHolder {
+	private static class SingletonHolder {
 		private static final DaoFactoryImpl INSTANCE = new DaoFactoryImpl();
 	}
 
