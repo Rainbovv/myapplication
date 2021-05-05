@@ -1,10 +1,8 @@
 package com.stefanini.taskmanager;
 
-import com.stefanini.taskmanager.operation.Operation;
-import com.stefanini.taskmanager.operation.factory.OperationFactoryImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.util.Arrays;
+
 
 
 public class Application {
@@ -16,15 +14,15 @@ public class Application {
         logger = LogManager.getLogger(Application.class);
 
         logger.trace("Application started.");
-        logger.debug("Program arguments: " + Arrays.toString(args));
 
-        if (args.length != 0) {
 
-            Operation operation = OperationFactoryImpl.getInstance().getOperation(args);
+        System.out.println("Please, enter users first name:");
+//            String u
+//
+//            ExecutorService executor = Executors.newFixedThreadPool(4);
+//
+//            executor.submit(() -> new ShowAllUsers().execute());
+//            executor.submit(() -> new ShowUserTasks().execute());
 
-            operation.execute();
-        }
-        else logger.error("Calling without arguments! Please use one of this arguments:" +
-                "\n-addTask; -createUser; -showAllUsers; -showTasks; -createUserAndAddTask");
     }
 }
