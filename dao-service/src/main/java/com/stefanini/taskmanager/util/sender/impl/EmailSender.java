@@ -33,6 +33,7 @@ public class EmailSender implements Sender {
             Transport.send(mm);
         } catch (MessagingException e) {
             logger.error(e.getMessage());
+            return false;
         }
         return true;
     }
