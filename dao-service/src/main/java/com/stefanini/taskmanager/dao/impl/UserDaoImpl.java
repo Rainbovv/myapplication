@@ -3,7 +3,7 @@ package com.stefanini.taskmanager.dao.impl;
 import com.stefanini.taskmanager.dao.AbstractDao;
 import com.stefanini.taskmanager.dao.UserDao;
 import com.stefanini.taskmanager.entities.User;
-import javax.persistence.Query;
+
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
@@ -16,13 +16,11 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User getUserByUserName(String userName) {
-        checkTransaction();
 
-        Query query = entityManager.createQuery(
-                "FROM " + getEntityClass().getName() + " u WHERE u.userName=:userName");
-        query.setParameter("userName", userName);
-
-        return (User)query.getSingleResult();
+        return getAll()
+                .filter(u -> u.getUserName().equals(userName))
+                .findFirst()
+                .orElse(null);
     }
 
     private static class SingletonHolder {

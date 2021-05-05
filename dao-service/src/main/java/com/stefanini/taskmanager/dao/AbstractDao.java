@@ -3,7 +3,11 @@ package com.stefanini.taskmanager.dao;
 import com.stefanini.taskmanager.config.PersistenceProvider;
 import com.stefanini.taskmanager.entities.AbstractEntity;
 import javax.persistence.*;
-import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.stream.Stream;
+
 
 public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
 
@@ -35,21 +39,22 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     public boolean remove(T entity) {
         checkTransaction();
 
-        Query query = entityManager.createQuery("DELETE FROM "
-                + getEntityClass().getName() + " e WHERE e.id = :entity_id");
+            entityManager.remove(entityManager.contains(entity) ?
+                    entity : entityManager.merge(entity));
 
-        query.setParameter("entity_id", entity.getId());
-
-        return query.executeUpdate() == 1;
+        return true;
     }
 
     @Override
-    public List<T> getAll() {
+    public Stream<T> getAll() {
         checkTransaction();
 
-        Query query = entityManager.createQuery("FROM " + getEntityClass().getName() );
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = builder.createQuery(getEntityClass());
+        Root<T> root = criteria.from(getEntityClass());
+        criteria.select(root);
 
-        return query.getResultList();
+        return entityManager.createQuery(criteria).getResultStream();
     }
 
     public void commit() {
