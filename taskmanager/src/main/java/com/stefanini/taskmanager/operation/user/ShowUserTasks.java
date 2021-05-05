@@ -14,8 +14,6 @@ public class ShowUserTasks extends UserOperation {
         logger.trace("Creating ShowUserTasks operation!");
     }
 
-
-
     @Override
     public void run() {
         logger.trace("ShowUserTasks running...");

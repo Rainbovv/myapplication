@@ -8,14 +8,14 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.stream.Stream;
 
-
 public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
 
     protected EntityManager entityManager;
     protected abstract Class<T> getEntityClass();
 
     protected AbstractDao() {
-        getEntityManager();
+        this.entityManager = PersistenceProvider.getEntityManagerFactory()
+                .createEntityManager();
     }
 
     @Override
@@ -36,13 +36,11 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     }
 
     @Override
-    public boolean remove(T entity) {
+    public void remove(T entity) {
         checkTransaction();
 
-            entityManager.remove(entityManager.contains(entity) ?
-                    entity : entityManager.merge(entity));
-
-        return true;
+        entityManager.remove(entityManager.contains(entity) ?
+        entity : entityManager.merge(entity));
     }
 
     @Override
@@ -69,12 +67,5 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
         if (!entityManager.getTransaction().isActive()) {
             entityManager.getTransaction().begin();
         }
-    }
-
-    protected void getEntityManager() {
-
-        if (entityManager == null)
-        entityManager = PersistenceProvider.getEntityManagerFactory()
-                .createEntityManager();
     }
 }

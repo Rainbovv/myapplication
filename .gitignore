@@ -1,7 +1,6 @@
 # Project exclude paths
 /target/
 /.idea/
-/src/main/resources/META-INF/persistence.xml
 .classpath
 .project
 /.settings/
@@ -11,3 +10,4 @@ Task1
 /dao-service/target/
 /taskmanager/target/
 /dao-service/src/main/resources/smtp.properties
+/dao-service/src/main/resources/META-INF/persistence.xml

@@ -23,9 +23,8 @@ public interface Dao<T extends AbstractEntity> {
     /**
      * Receives an entity of type (T extends AbstractEntity) and removes it from DB
      * @param entity of type (T extends AbstractEntity)
-     * @return (rows affected == 1) ? true : false
      */
-    boolean remove(T entity);
+    void remove(T entity);
 
     /**
      * Selects all the records from DB

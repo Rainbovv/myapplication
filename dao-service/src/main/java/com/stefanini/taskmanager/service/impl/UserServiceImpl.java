@@ -59,20 +59,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean remove(User user) {
+	public void remove(User user) {
 
 		logger.trace("remove() started!");
 		try {
 			userDao.remove(user);
 			userDao.commit();
 			logger.debug("User: " + user.getUserName() + " removed!");
-			return true;
 		}
 		catch (IllegalArgumentException exception) {
 			logger.error(exception.getMessage());
 			userDao.rollback();
 		}
-		return false;
 	}
 
 	@Override
