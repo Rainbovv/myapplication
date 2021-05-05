@@ -16,8 +16,8 @@
             <property name="javax.persistence.jdbc.password" value="Rainb0vv@446571"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/myapplication"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
+<!--            <property name="hibernate.show_sql" value="true"/>-->
+<!--            <property name="hibernate.format_sql" value="true"/>-->
         </properties>
 
     </persistence-unit>
