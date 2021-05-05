@@ -1,6 +1,7 @@
 package com.stefanini.taskmanager.operation.user;
 
 import com.stefanini.taskmanager.entities.Task;
+import com.stefanini.taskmanager.service.TaskService;
 import com.stefanini.taskmanager.service.impl.TaskServiceImpl;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -9,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 
 public class AddTask extends UserOperationWithArgs {
 
-    TaskServiceImpl taskService;
+    TaskService taskService;
 
     public AddTask(String[] args, OptionParser parser) {
         super(args, parser);
@@ -40,8 +41,8 @@ public class AddTask extends UserOperationWithArgs {
             else
                 userService.addTask(persistedTask, options.valueOf("un").toString());
         }
-        catch (OptionException throwable) {
-            logger.error(throwable.getMessage());
+        catch (OptionException exception) {
+            logger.error(exception.getMessage());
         }
     }
 }

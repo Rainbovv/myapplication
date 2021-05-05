@@ -1,9 +1,10 @@
 package com.stefanini.taskmanager;
 
 import com.stefanini.taskmanager.config.PersistenceProvider;
+import com.stefanini.taskmanager.dao.TaskDao;
+import com.stefanini.taskmanager.dao.UserDao;
+import com.stefanini.taskmanager.dao.factory.DaoFactory;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
-import com.stefanini.taskmanager.dao.impl.TaskDaoImpl;
-import com.stefanini.taskmanager.dao.impl.UserDaoImpl;
 import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.entities.User;
 import org.junit.jupiter.api.*;
@@ -13,16 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ApplicationTest {
 
-    private static UserDaoImpl userDao;
-    private static TaskDaoImpl taskDao;
+    private static UserDao userDao;
+    private static TaskDao taskDao;
     private static User user;
     private static Task task;
 
     @BeforeAll
     public static void prepareData() {
         PersistenceProvider.setPersistenceUnitName("local-mysql-test");
-        userDao = DaoFactoryImpl.getInstance().getUserDao();
-        taskDao = DaoFactoryImpl.getInstance().getTaskDao();
+        userDao = (UserDao)DaoFactoryImpl.getInstance().getDao(DaoFactory.DaoType.USERDAO);
+        taskDao = (TaskDao)DaoFactoryImpl.getInstance().getDao(DaoFactory.DaoType.TASKDAO);
         user = new User("TestFirstName", "TestLastName", "TestUserName" );
         task = new Task("TestTitle", "TestDescription");
     }

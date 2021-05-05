@@ -4,7 +4,6 @@ import com.stefanini.taskmanager.dao.AbstractDao;
 import com.stefanini.taskmanager.dao.UserDao;
 import com.stefanini.taskmanager.entities.User;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
@@ -30,7 +29,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         private static final UserDaoImpl INSTANCE = new UserDaoImpl();
     }
 
-    public static UserDaoImpl getInstance() {
+    public static UserDao getInstance() {
         return SingletonHolder.INSTANCE;
     }
 }

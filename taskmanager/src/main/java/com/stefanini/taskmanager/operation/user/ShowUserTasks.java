@@ -1,12 +1,10 @@
 package com.stefanini.taskmanager.operation.user;
 
-import com.stefanini.taskmanager.entities.Task;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.logging.log4j.LogManager;
 
-import java.util.List;
 
 public class ShowUserTasks extends UserOperationWithArgs {
 
@@ -29,8 +27,8 @@ public class ShowUserTasks extends UserOperationWithArgs {
             userService.findUserAllTasks(options.valueOf("un").toString())
                     .forEach(System.out::println);
 
-        } catch (OptionException throwable) {
-            logger.error(throwable.getMessage());
+        } catch (OptionException exception) {
+            logger.error(exception.getMessage());
         }
     }
 }

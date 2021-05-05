@@ -35,4 +35,13 @@ public interface UserService extends Service<User> {
      * @return record persisted ? true : false
      */
     boolean addTask(Task task, String userName);
+
+    /**
+     * Creates a user if there is no such user in DB and assigns him
+     * a new task. If this is task is already present in DB assigns persisted task.
+     * @param user of type User
+     * @param task of type Task
+     * @return user updated ? updated entity User : null
+     */
+    public User createUserAndAddTask(User user, Task task);
 }

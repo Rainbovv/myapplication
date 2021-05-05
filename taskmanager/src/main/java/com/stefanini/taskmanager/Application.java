@@ -1,9 +1,6 @@
 package com.stefanini.taskmanager;
 
-import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
-import com.stefanini.taskmanager.dao.impl.UserDaoImpl;
-import com.stefanini.taskmanager.entities.User;
-import com.stefanini.taskmanager.operation.*;
+import com.stefanini.taskmanager.operation.Operation;
 import com.stefanini.taskmanager.operation.factory.OperationFactoryImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

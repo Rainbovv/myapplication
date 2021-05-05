@@ -1,11 +1,13 @@
 package com.stefanini.taskmanager.dao.factory;
 
-
-import com.stefanini.taskmanager.dao.impl.TaskDaoImpl;
-import com.stefanini.taskmanager.dao.impl.UserDaoImpl;
+import com.stefanini.taskmanager.dao.Dao;
+import com.stefanini.taskmanager.entities.AbstractEntity;
 
 public interface DaoFactory {
 
-	UserDaoImpl getUserDao();
-	TaskDaoImpl getTaskDao();
+	enum DaoType {
+		USERDAO, TASKDAO
+	}
+
+	Dao<? extends AbstractEntity> getDao(DaoFactory.DaoType daoType);
 }

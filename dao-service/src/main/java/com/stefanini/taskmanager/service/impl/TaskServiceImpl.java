@@ -1,6 +1,7 @@
 package com.stefanini.taskmanager.service.impl;
 
 import com.stefanini.taskmanager.dao.TaskDao;
+import com.stefanini.taskmanager.dao.factory.DaoFactory;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
 import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.service.TaskService;
@@ -25,11 +26,11 @@ public class TaskServiceImpl implements TaskService {
             logger.trace("New task created!");
             taskDao.commit();
         }
-        catch (EntityExistsException throwable) {
+        catch (EntityExistsException exception) {
             logger.error("Task already exists!");
         }
-        catch (IllegalArgumentException throwable) {
-            logger.error(throwable.getMessage());
+        catch (IllegalArgumentException exception) {
+            logger.error(exception.getMessage());
         }
         return task;
     }
@@ -40,8 +41,8 @@ public class TaskServiceImpl implements TaskService {
             taskDao.update(task);
             taskDao.commit();
         }
-        catch (IllegalArgumentException | PersistenceException throwable) {
-            logger.error(throwable.getMessage());
+        catch (IllegalArgumentException | PersistenceException exception) {
+            logger.error(exception.getMessage());
         }
         return task;
     }
@@ -53,17 +54,18 @@ public class TaskServiceImpl implements TaskService {
             taskDao.commit();
             return true;
         }
-        catch (IllegalArgumentException throwable) {
-            logger.error(throwable.getMessage());
+        catch (IllegalArgumentException exception) {
+            logger.error(exception.getMessage());
         }
         return false;
     }
 
+    @Override
     public Task findByTitle(String title) {
         try {
             return taskDao.getByTitle(title);
         }
-        catch (NoResultException throwable) {
+        catch (NoResultException exception) {
             logger.error("No such task!");
         }
         return null;
@@ -76,10 +78,11 @@ public class TaskServiceImpl implements TaskService {
     public static TaskServiceImpl getInstance() {
         TaskServiceImpl taskService = SingletonHolder.INSTANCE;
 
-        if (taskService.taskDao == null)
-            taskService.taskDao = DaoFactoryImpl.getInstance().getTaskDao();
         if (taskService.logger == null)
             taskService.logger = LogManager.getLogger(TaskServiceImpl.class);
+        if (taskService.taskDao == null)
+            taskService.taskDao = (TaskDao)DaoFactoryImpl.getInstance()
+                    .getDao(DaoFactory.DaoType.TASKDAO);
 
         return taskService;
     }
