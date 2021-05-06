@@ -1,6 +1,5 @@
 package com.stefanini.taskmanager.operation;
 
-public interface Operation {
+public interface Operation extends Runnable {
 
-    void execute();
 }

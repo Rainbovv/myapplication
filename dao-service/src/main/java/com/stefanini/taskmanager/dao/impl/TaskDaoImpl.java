@@ -3,7 +3,7 @@ package com.stefanini.taskmanager.dao.impl;
 import com.stefanini.taskmanager.dao.AbstractDao;
 import com.stefanini.taskmanager.dao.TaskDao;
 import com.stefanini.taskmanager.entities.Task;
-import javax.persistence.Query;
+
 
 public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
 
@@ -16,13 +16,11 @@ public class TaskDaoImpl extends AbstractDao<Task> implements TaskDao {
 
     @Override
     public Task getByTitle(String title) {
-        checkTransaction();
 
-        Query query = entityManager.createQuery(
-                "FROM " + getEntityClass().getName() + " t WHERE t.title=:title");
-        query.setParameter("title", title);
-
-        return (Task)query.getSingleResult();
+        return getAll()
+                .filter(t -> t.getTitle().equals(title))
+                .findFirst()
+                .orElse(null);
     }
 
     private static class SingletonHolder {

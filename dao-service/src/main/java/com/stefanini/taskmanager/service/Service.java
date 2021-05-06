@@ -20,7 +20,6 @@ public interface Service<T> {
     /**
      * Receives an entity and removes it from DB using Dao
      * @param entity
-     * @return (rows affected == 1) ? true : false
      */
-    boolean remove(T entity);
+    void remove(T entity);
 }

@@ -38,7 +38,7 @@ public class NotificationAgent {
 
                 if ((boolean) retValue &&
                         task.getClass().isAnnotationPresent(NotifyWhenPersisting.class))
-                    notifyTaskAssigning(task, userName);
+                  notifyTaskAssigning(task, userName);
                 break;
 
             case "execution(User com.stefanini.taskmanager.service.impl.UserServiceImpl" +

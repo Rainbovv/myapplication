@@ -2,6 +2,8 @@ package com.stefanini.taskmanager.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.stefanini.taskmanager.dao.UserDao;
 import com.stefanini.taskmanager.dao.factory.DaoFactory;
 import com.stefanini.taskmanager.dao.factory.DaoFactoryImpl;
@@ -57,20 +59,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean remove(User user) {
+	public void remove(User user) {
 
 		logger.trace("remove() started!");
 		try {
 			userDao.remove(user);
 			userDao.commit();
 			logger.debug("User: " + user.getUserName() + " removed!");
-			return true;
 		}
 		catch (IllegalArgumentException exception) {
 			logger.error(exception.getMessage());
 			userDao.rollback();
 		}
-		return false;
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
 		logger.trace("findAllUsers() started!");
 
-		List<User> users = userDao.getAll();
+		List<User> users = userDao.getAll().collect(Collectors.toList());
 
 		logger.debug("Users found: " + users.size());
 		return users;

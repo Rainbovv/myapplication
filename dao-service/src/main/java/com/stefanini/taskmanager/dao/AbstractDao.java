@@ -3,7 +3,10 @@ package com.stefanini.taskmanager.dao;
 import com.stefanini.taskmanager.config.PersistenceProvider;
 import com.stefanini.taskmanager.entities.AbstractEntity;
 import javax.persistence.*;
-import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.stream.Stream;
 
 public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
 
@@ -11,7 +14,8 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     protected abstract Class<T> getEntityClass();
 
     protected AbstractDao() {
-        getEntityManager();
+        this.entityManager = PersistenceProvider.getEntityManagerFactory()
+                .createEntityManager();
     }
 
     @Override
@@ -32,24 +36,23 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     }
 
     @Override
-    public boolean remove(T entity) {
+    public void remove(T entity) {
         checkTransaction();
 
-        Query query = entityManager.createQuery("DELETE FROM "
-                + getEntityClass().getName() + " e WHERE e.id = :entity_id");
-
-        query.setParameter("entity_id", entity.getId());
-
-        return query.executeUpdate() == 1;
+        entityManager.remove(entityManager.contains(entity) ?
+        entity : entityManager.merge(entity));
     }
 
     @Override
-    public List<T> getAll() {
+    public Stream<T> getAll() {
         checkTransaction();
 
-        Query query = entityManager.createQuery("FROM " + getEntityClass().getName() );
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = builder.createQuery(getEntityClass());
+        Root<T> root = criteria.from(getEntityClass());
+        criteria.select(root);
 
-        return query.getResultList();
+        return entityManager.createQuery(criteria).getResultStream();
     }
 
     public void commit() {
@@ -64,12 +67,5 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
         if (!entityManager.getTransaction().isActive()) {
             entityManager.getTransaction().begin();
         }
-    }
-
-    protected void getEntityManager() {
-
-        if (entityManager == null)
-        entityManager = PersistenceProvider.getEntityManagerFactory()
-                .createEntityManager();
     }
 }

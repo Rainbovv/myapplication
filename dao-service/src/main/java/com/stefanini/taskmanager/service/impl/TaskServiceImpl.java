@@ -7,7 +7,6 @@ import com.stefanini.taskmanager.entities.Task;
 import com.stefanini.taskmanager.service.TaskService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
@@ -26,11 +25,13 @@ public class TaskServiceImpl implements TaskService {
             logger.trace("New task created!");
             taskDao.commit();
         }
-        catch (EntityExistsException exception) {
+        catch (PersistenceException exception) {
             logger.error("Task already exists!");
+            taskDao.rollback();
         }
         catch (IllegalArgumentException exception) {
             logger.error(exception.getMessage());
+            taskDao.rollback();
         }
         return task;
     }
@@ -43,21 +44,21 @@ public class TaskServiceImpl implements TaskService {
         }
         catch (IllegalArgumentException | PersistenceException exception) {
             logger.error(exception.getMessage());
+            taskDao.rollback();
         }
         return task;
     }
 
     @Override
-    public boolean remove(Task task) {
+    public void remove(Task task) {
         try {
             taskDao.remove(task);
             taskDao.commit();
-            return true;
         }
         catch (IllegalArgumentException exception) {
             logger.error(exception.getMessage());
+            taskDao.rollback();
         }
-        return false;
     }
 
     @Override

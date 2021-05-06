@@ -1,7 +1,8 @@
 package com.stefanini.taskmanager.dao;
 
 import com.stefanini.taskmanager.entities.AbstractEntity;
-import java.util.List;
+
+import java.util.stream.Stream;
 
 public interface Dao<T extends AbstractEntity> {
 
@@ -22,15 +23,14 @@ public interface Dao<T extends AbstractEntity> {
     /**
      * Receives an entity of type (T extends AbstractEntity) and removes it from DB
      * @param entity of type (T extends AbstractEntity)
-     * @return (rows affected == 1) ? true : false
      */
-    boolean remove(T entity);
+    void remove(T entity);
 
     /**
      * Selects all the records from DB
      * @return a List entities from persisted records
      */
-    List<T> getAll();
+    Stream<T> getAll();
 
     /**
      * Ends transaction and commits changes to DB
